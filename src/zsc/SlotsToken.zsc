@@ -1,0 +1,230 @@
+//This handles most aspects of the player slot system
+
+struct SlotManager
+{
+    Array<String> slots[10];
+
+    void Populate()
+    {
+        for (int i = 0; i < slots.Size(); i++)
+        {
+            string convar = "slots_"..i.."_0";
+            SlotDebug.LogVerbose("Populating Slots from "..convar);
+
+            string list = CVar.GetCVar(convar,players[consoleplayer]).GetString();
+            list.Split(slots[i], ";", TOK_SKIPEMPTY);
+        }
+    }
+
+    void WriteSlot(int slot)
+    {
+        int total_convars = 5;
+        string convar = "slots_"..slot.."_0";
+
+        string convar_write;
+        for (int i = 0; i < slots[slot].Size(); i++)
+        {
+            convar_write = convar_write..slots[slot][i]..';';
+        }
+
+        SlotDebug.LogVerbose("Writing Slot List ("..convar_write..") to " .. convar);
+        CVar writevar = CVar.FindCVar(convar); //For some reason this doesn't work (not null, just doesn't write) when we use GetCVar()...
+        writevar.SetString(convar_write);
+
+    }
+
+    void UpdateSlotItem(int slot, String item)
+    {
+        let position = slots[slot].Find(item);
+
+        if (position == slots[slot].Size()) //If it's not in slot, push it
+        {
+            slots[slot].Push(item);
+            Console.printf(item.." Added.");
+        }
+        else if (position < slots[slot].Size() - 1) //It's low priority, bump it to the top
+        {
+            slots[slot].Delete(position);
+            slots[slot].Push(item);
+            Console.printf(item.." is Low Priority, increasing.");
+        }
+        else //it's highest priority, remove it
+        {
+            slots[slot].Pop();
+            Console.printf(item.." Removed.");
+        }
+        WriteSlot(slot);
+    }
+
+    String GetSlotItem(int slot)
+    {
+        let item = "";
+        let size = slots[slot].Size();
+        if (size > 0)
+        {
+            for (int i = 0;i < size;i++)
+            {
+                if (ValidWeapon(slots[slot][i]))
+                    item = slots[slot][i];
+            }
+        }
+        
+        return item;
+    }
+
+    bool ValidWeapon(String weapon)
+    {
+        let Weap = Weapon(players[consoleplayer].mo.FindInventory(weapon));
+        return Weap != null;
+
+        /*
+        //Check if we have the weapon
+        if (Weap == null)
+            return false;
+        //Check if the weapon has ammo
+        if (Weap.CheckAmmo(PrimaryFire,false))
+            return true;
+        
+        return false;
+        */
+
+    }
+
+    /*
+    private void GetPlayerWeapons()
+    {
+        for (int i = 0; i < 9;i++)
+        {
+            for (int j = 0;j < player.weapons.SlotSize(i))
+            {
+                let slotweaps = player.weapons.GetWeapon(i,j);
+            }
+        }
+    }
+    */
+}
+
+class SlotsToken : Inventory
+{
+    Default
+    {
+        +INVENTORY.UNDROPPABLE;
+        +INVENTORY.ALWAYSPICKUP;
+        +INVENTORY.UNCLEARABLE;
+        +INVENTORY.HUBPOWER;
+        +INVENTORY.PERSISTENTPOWER;
+        +INVENTORY.UNTOSSABLE;
+        +INVENTORY.IGNORESKILL;
+        //+INVENTORY.KEEPDEPLETED;
+        //+INVENTORY.INVBAR;
+        Inventory.InterHubAmount 1;
+        Inventory.MaxAmount 1;
+    }
+
+    string actualCurrentWeapon; //our ACTUAL currently selected weapon, used to know when we change weapon
+    string lastWeapon; //The previous weapon we selected which was not ignored
+    string currWeapon; //The latest weapon we selected which was not ignored
+    bool ignored;
+    bool blockRelease;
+    SlotManager slots;
+
+    override void AttachToOwner(Actor other)
+    {
+        slots.Populate();
+        Super.AttachToOwner(other);
+    }
+
+    override void DoEffect()
+    {
+        Super.DoEffect();
+        RememberWeapons();
+    }
+
+    private String GetWeapon()
+    {
+        let pend = Owner.Player.PendingWeapon;
+        let weap = Owner.Player.ReadyWeapon;
+        if (pend != WP_NOCHANGE)
+            return pend.GetClassName();
+        else if (weap)
+            return weap.GetClassName();
+        return "";
+    }
+
+    private void SwitchWeapon(String newWeapon)
+    {
+        owner.A_SelectWeapon(newWeapon);
+    }
+
+    private void RememberWeapons()
+    {
+        let weap = GetWeapon();
+        if (actualCurrentWeapon != weap && weap != "") //changed weapon
+        {
+            blockRelease = !ignored;
+            if (ignored)
+            {
+                ignored = false;
+                SlotDebug.LogVerbose("Weapon Switch Ignored");
+            }
+            else if (currWeapon == "")
+            {
+                currWeapon = weap;
+            }
+            else if (weap != currWeapon)
+            {
+                lastWeapon = currWeapon;
+                currWeapon = weap;                
+                SlotDebug.LogVerbose("Switched Weapon");
+            }
+            actualCurrentWeapon = weap;
+            SlotDebug.LogVerbose("UPDATE: blockRelease is " .. blockRelease);
+        }
+    }
+
+    //Config a slot
+    void DoConfigSlot(int slot)
+    {
+        blockRelease = true;
+        SlotDebug.LogVerbose("slot "..slot.." config press");
+        slots.UpdateSlotItem(slot,GetWeapon());
+    }
+
+    //Selecting a slot
+    void DoWeaponSlot(int slot)
+    {
+        blockRelease = false;
+        let weap = GetWeapon();
+        let slotweap = slots.GetSlotItem(slot);
+        if (slotweap != weap)
+        {
+            SlotDebug.LogVerbose("slot "..slot.." press. Selecting " .. slotweap);
+            ignored = true;
+            SwitchWeapon(slotweap);
+        }
+        else
+        {
+            SwitchWeapon(currWeapon);
+        }
+    }
+
+    //Releasing slot button
+    void DoWeaponSlotRelease()
+    {
+        if (!blockRelease)
+            DoLastWeapon();
+        blockRelease = false;
+    }
+
+    //Selecting last weapon
+    void DoLastWeapon()
+    {
+        SlotDebug.LogVerbose("last weapon press");
+        
+        let weap = GetWeapon();
+        if (weap != currWeapon)
+            SwitchWeapon(currWeapon);
+        else
+            SwitchWeapon(lastWeapon);
+    }
+}

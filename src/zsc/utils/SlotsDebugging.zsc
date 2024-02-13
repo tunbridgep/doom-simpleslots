@@ -1,0 +1,31 @@
+class SlotDebug
+{
+    const mod_name = "[Simple Slots]";
+    const error_text = "ERROR: ";
+    
+    const NORMAL = 1;
+    const VERBOSE = 2;
+
+    private static void printDebug(String text)
+    {
+        Console.printf(mod_name.." "..text);
+    }
+    
+    static void Log(String text)
+    {
+        if (slots_debug >= NORMAL)
+            printDebug(text);
+    }
+    
+    static void LogError(String Text)
+    {
+        printDebug(error_text..text);
+    }
+    
+    static void LogVerbose(String text)
+    {
+        if (slots_debug >= VERBOSE)
+            printDebug(text);
+    }
+
+} 

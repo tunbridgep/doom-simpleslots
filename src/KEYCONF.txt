@@ -1,0 +1,46 @@
+alias slots_lastweapon "netevent LastWeapon"
+defaultbind Q slots_lastweapon
+
+alias slots_config "netevent WeaponSlotConfig"
+defaultbind ALT slots_config
+
+
+alias +slots_select_0 "netevent WeaponSlot0"
+alias -slots_select_0 "netevent WeaponSlotRelease"
+defaultbind KP1 +slots_select_0
+
+alias +slots_select_1 "netevent WeaponSlot1"
+alias -slots_select_1 "netevent WeaponSlotRelease"
+defaultbind KP2 +slots_select_1
+
+alias +slots_select_2 "netevent WeaponSlot2"
+alias -slots_select_2 "netevent WeaponSlotRelease"
+defaultbind KP3 +slots_select_2
+
+alias +slots_select_3 "netevent WeaponSlot3"
+alias -slots_select_3 "netevent WeaponSlotRelease"
+defaultbind KP4 +slots_select_3
+
+alias +slots_select_4 "netevent WeaponSlot4"
+alias -slots_select_4 "netevent WeaponSlotRelease"
+defaultbind KP5 +slots_select_4
+
+alias +slots_select_5 "netevent WeaponSlot5"
+alias -slots_select_5 "netevent WeaponSlotRelease"
+defaultbind KP6 +slots_select_5
+
+alias +slots_select_6 "netevent WeaponSlot6"
+alias -slots_select_6 "netevent WeaponSlotRelease"
+defaultbind KP7 +slots_select_6
+
+alias +slots_select_7 "netevent WeaponSlot7"
+alias -slots_select_7 "netevent WeaponSlotRelease"
+defaultbind KP8 +slots_select_7
+
+alias +slots_select_8 "netevent WeaponSlot8"
+alias -slots_select_8 "netevent WeaponSlotRelease"
+defaultbind KP9 +slots_select_8
+
+alias +slots_select_9 "netevent WeaponSlot9"
+alias -slots_select_9 "netevent WeaponSlotRelease"
+defaultbind KP0 +slots_select_9

@@ -1,0 +1,32 @@
+AddOptionMenu "OptionsMenu"
+{
+    StaticText ""
+    Submenu "$SLOT_MENUNAME", "SimpleSlotOptions"
+}
+
+OptionMenu "SimpleSlotOptions"
+{
+    Title "$SLOT_MAIN_TITLE"
+    StaticText ""
+    Control "$SLOT_KEY_LASTWEAPON", "slots_lastweapon"
+    StaticText "$SLOT_KEY_LASTWEAPON_DESC"
+    StaticText "$SLOT_KEY_LASTWEAPON_DESC2"
+    StaticText ""
+    Control "$SLOT_KEY_CONFIG", "slots_config"
+    StaticText "$SLOT_KEY_CONFIG_DESC"
+    StaticText "$SLOT_KEY_CONFIG_DESC2"
+    StaticText ""
+    StaticText ""
+    StaticText "$SLOT_SLOTS_MAIN_DESC"
+    Control "$SLOT_KEY_SLOT0", "+slots_select_0"
+    Control "$SLOT_KEY_SLOT1", "+slots_select_1"
+    Control "$SLOT_KEY_SLOT2", "+slots_select_2"
+    Control "$SLOT_KEY_SLOT3", "+slots_select_3"
+    Control "$SLOT_KEY_SLOT4", "+slots_select_4"
+    Control "$SLOT_KEY_SLOT4", "+slots_select_4"
+    Control "$SLOT_KEY_SLOT5", "+slots_select_5"
+    Control "$SLOT_KEY_SLOT6", "+slots_select_6"
+    Control "$SLOT_KEY_SLOT7", "+slots_select_7"
+    Control "$SLOT_KEY_SLOT8", "+slots_select_8"
+    Control "$SLOT_KEY_SLOT9", "+slots_select_9"
+}

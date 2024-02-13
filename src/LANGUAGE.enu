@@ -1,0 +1,19 @@
+[enu default]
+
+//Menu
+SLOT_MENUNAME = "Simple Slots";
+SLOT_MAIN_TITLE = "Simple Slots Options";
+SLOT_KEY_LASTWEAPON = "Select Last Used Weapon";
+SLOT_KEY_LASTWEAPON_DESC = "Selects the previously used weapon";
+SLOT_KEY_LASTWEAPON_DESC2 = "Weapons previously selected via slots aren't selected";
+SLOT_SLOTS_MAIN_DESC = "Weapon Slots";
+SLOT_KEY_SLOT0 = "Select Slot 1";
+SLOT_KEY_SLOT1 = "Select Slot 2";
+SLOT_KEY_SLOT2 = "Select Slot 3";
+SLOT_KEY_SLOT3 = "Select Slot 4";
+SLOT_KEY_SLOT4 = "Select Slot 5";
+SLOT_KEY_SLOT5 = "Select Slot 6";
+SLOT_KEY_SLOT6 = "Select Slot 7";
+SLOT_KEY_SLOT7 = "Select Slot 8";
+SLOT_KEY_SLOT8 = "Select Slot 9";
+SLOT_KEY_SLOT9 = "Select Slot 10";
