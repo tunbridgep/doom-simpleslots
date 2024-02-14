@@ -97,6 +97,11 @@ class SimpleSlotsHandler : SlotsBaseHandler
             doConfig = false;
             token.DoWeaponSlotRelease();
         }
+        else if (e.Name == "SlotsHolster")
+        {
+            doConfig = false;
+            token.DoHolster();
+        }
     }
 }
 

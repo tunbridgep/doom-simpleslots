@@ -1,0 +1,49 @@
+//A dummy weapon used to "holster" our current weapon
+class SlotsHolster : Weapon
+{
+    Name lastWeapon;
+
+    void SetLastWeapon(Name weapon)
+    {
+        lastWeapon = weapon;
+    }
+
+    Name GetLastWeapon()
+    {
+        return lastWeapon;
+    }
+
+    Default
+    {
+        +WEAPON.WIMPY_WEAPON
+        +WEAPON.NOALERT
+        +WEAPON.NOAUTOFIRE
+        +WEAPON.NO_AUTO_SWITCH
+        +WEAPON.CHEATNOTWEAPON
+        +WEAPON.NODEATHINPUT
+        +WEAPON.NODEATHDESELECT
+        +INVENTORY.UNDROPPABLE
+        +INVENTORY.ALWAYSPICKUP
+        +INVENTORY.HUBPOWER
+        +INVENTORY.PERSISTENTPOWER
+        +INVENTORY.UNTOSSABLE
+        +INVENTORY.IGNORESKILL
+    }
+    States
+    {
+        Ready:
+            TNT1 A 1 A_WeaponReady;
+            //TNT1 A 1 A_SetCrosshair(99);
+            Loop;
+        Select:
+            TNT1 AAAAAAAAA 1 A_Raise;
+            Loop;
+        Deselect:
+            TNT1 AAAAAAAAA 1 A_Lower;
+            Loop;
+        Fire:
+        AltFire:
+            TNT1 A 1 A_SelectWeapon(invoker.lastWeapon);
+            Goto Ready;
+    }
+}

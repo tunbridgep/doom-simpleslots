@@ -2,28 +2,28 @@
 nosave server int slots_debug = 0;
 nosave server float slots_delay = 1.0;
 
-user string slots_ignore = "";
+nosave user string slots_ignore = "";
 
-user string slots_0_0 = "";
-user string slots_0_1 = "";
-user string slots_0_2 = "";
-user string slots_0_3 = "";
-user string slots_0_4 = "";
+nosave user string slots_0_0 = "";
+nosave user string slots_0_1 = "";
+nosave user string slots_0_2 = "";
+nosave user string slots_0_3 = "";
+nosave user string slots_0_4 = "";
 
-user string slots_1_0 = "";
+nosave user string slots_1_0 = "";
 
-user string slots_2_0 = "";
+nosave user string slots_2_0 = "";
 
-user string slots_3_0 = "";
+nosave user string slots_3_0 = "";
 
-user string slots_4_0 = "";
+nosave user string slots_4_0 = "";
 
-user string slots_5_0 = "";
+nosave user string slots_5_0 = "";
 
-user string slots_6_0 = "";
+nosave user string slots_6_0 = "";
 
-user string slots_7_0 = "";
+nosave user string slots_7_0 = "";
 
-user string slots_8_0 = "";
+nosave user string slots_8_0 = "";
 
-user string slots_9_0 = "";
+nosave user string slots_9_0 = "";

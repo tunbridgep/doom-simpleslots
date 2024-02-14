@@ -25,3 +25,6 @@ SLOT_KEY_SLOT6 = "Select Slot 7";
 SLOT_KEY_SLOT7 = "Select Slot 8";
 SLOT_KEY_SLOT8 = "Select Slot 9";
 SLOT_KEY_SLOT9 = "Select Slot 10";
+SLOT_KEY_HOLSTER = "Holster Weapon";
+SLOT_KEY_HOLSTER_DESC = "Lower your current weapon.";
+SLOT_KEY_HOLSTER_DESC2 = "Attack or use the Holster key again to unholster.";
