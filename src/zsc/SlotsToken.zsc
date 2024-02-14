@@ -172,6 +172,7 @@ class SlotsToken : Inventory
     Name ignored; //Name of the currently ignored weapon. This is temporary and not added to the ignore list
     SlotManager slots;
     IgnoreList ignores;
+    bool poweredUp; //Is our weapon a powered-up version?
     bool enableRelease; //Can we release a slot button
 
     override void AttachToOwner(Actor other)
@@ -203,9 +204,15 @@ class SlotsToken : Inventory
         let pend = Owner.Player.PendingWeapon;
         let weap = Owner.Player.ReadyWeapon;
         if (pend != WP_NOCHANGE)
+        {
+            poweredUp = pend.bPOWERED_UP;
             return pend.GetClassName();
+        }
         else if (weap)
+        {
+            poweredUp = weap.bPOWERED_UP;
             return weap.GetClassName();
+        }
         return 'None';
     }
 
@@ -218,7 +225,7 @@ class SlotsToken : Inventory
     private void RememberWeapons()
     {
         let weap = GetWeapon();
-        if (actualCurrentWeapon != weap && weap != 'None') //changed weapon
+        if (actualCurrentWeapon != weap && weap != 'None' && !poweredUp) //changed weapon
         {
             if (ignored == weap)
             {
@@ -291,7 +298,7 @@ class SlotsToken : Inventory
         SlotDebug.LogVerbose("last weapon press");
         
         let weap = GetWeapon();
-        if (weap != currWeapon)
+        if (weap != currWeapon && !poweredUp)
             SwitchWeapon(currWeapon);
         else
             SwitchWeapon(lastWeapon);
