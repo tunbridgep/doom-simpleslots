@@ -1,6 +1,6 @@
 //This is the same as a regular event handler, but it automatically
 //filters out reopen game events, and the titlemap
-class SlotsBaseHandler : EventHandler
+class SlotsBaseHandler : StaticEventHandler
 {
     virtual void UniqueWorldLoaded(WorldEvent e)
     {
@@ -12,8 +12,8 @@ class SlotsBaseHandler : EventHandler
         //override this
     }
     
-    override void PlayerSpawned(PlayerEvent e)
-    {      
+    override void PlayerEntered(PlayerEvent e)
+    {
         if (gamestate == 7) //TITLEMAP
             return;
             

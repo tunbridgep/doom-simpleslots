@@ -1,16 +1,39 @@
 //Handles giving token on startup, and deals with keypresses
 class SimpleSlotsHandler : SlotsBaseHandler
 {
-    override void UniqueWorldLoaded(WorldEvent e)
+    private void SetupTokens(Actor Player)
     {
+        let item = SlotsToken(Player.FindInventory("SlotsToken"));
+        if (item == null)
+        {
+            SlotDebug.LogVerbose("Token Given to Player");
+            Player.GiveInventory("SlotsToken",1);
+        }
+        else
+        {
+            SlotDebug.LogVerbose("Token Populating");
+            item.DoPopulate();
+        }
+
     }
-      
+
     override void UniquePlayerEntered(Actor Player, bool returning)
     {
-        if (!Player.CheckInventory("SlotsToken",1))
+        SetupTokens(Player);
+    }
+
+    override void UniqueWorldLoaded(WorldEvent e)
+    {
+        if (!e.IsSaveGame)
+            return;
+
+        for (int i = 0;i < players.Size();i++)
         {
-            Player.GiveInventory("SlotsToken",1);
-            SlotDebug.LogVerbose("Token Given");
+            if (playeringame[i])
+            {
+                let player = players[i].mo;
+                SetupTokens(player);
+            }
         }
     }
     

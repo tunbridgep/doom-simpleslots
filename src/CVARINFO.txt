@@ -3,6 +3,8 @@ nosave server int slots_debug = 0;
 //server cheat int nosave_items_starting = 0;
 //nosave int nosave_style = 0;
 
+user string slots_ignore = "";
+
 user string slots_0_0 = "";
 user string slots_0_1 = "";
 user string slots_0_2 = "";
