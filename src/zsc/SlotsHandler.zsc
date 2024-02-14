@@ -47,6 +47,14 @@ class SimpleSlotsHandler : SlotsBaseHandler
             token.DoWeaponSlot(slot);
     }
 
+    private void DoLast(SlotsToken token)
+    {
+        if (doConfig)
+            token.DoIgnoreWeapon();
+        else
+            token.DoLastWeapon();
+    }
+
     override void NetworkProcess (ConsoleEvent e) 
     {
         let player = players[e.Player].mo;
@@ -54,10 +62,12 @@ class SimpleSlotsHandler : SlotsBaseHandler
         
         if (e.Name == "WeaponSlotConfig")
             doConfig = true;
+        else if (e.Name == "WeaponSlotConfigOff")
+            doConfig = false;
 
         else if (e.Name == "LastWeapon")
         {
-            token.DoLastWeapon();
+            DoLast(token);
             doConfig = false;
         }
 

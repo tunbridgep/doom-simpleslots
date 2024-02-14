@@ -7,10 +7,10 @@ struct IgnoreList
     void Populate()
     {
         string convar = "slots_ignore";
-        SlotDebug.LogVerbose("Populating Ignore List from "..convar);
-
         string list = CVar.GetCVar(convar,players[consoleplayer]).GetString();
         list.Split(ignores, ";", TOK_SKIPEMPTY);
+
+        SlotDebug.LogVerbose("Populated Ignore List");
     }
     
     void Write()
@@ -40,7 +40,7 @@ struct IgnoreList
             ignores.Push(item);
         else
             ignores.Delete(position);
-
+        Write();
     }
 }
 
@@ -58,7 +58,7 @@ struct SlotManager
             string list = CVar.GetCVar(convar,players[consoleplayer]).GetString();
             list.Split(slots[i], ";", TOK_SKIPEMPTY);
         }
-        SlotDebug.LogVerbose("Populated...");
+        SlotDebug.LogVerbose("Populated Slots List");
     }
 
     void WriteSlot(int slot)
@@ -183,6 +183,7 @@ class SlotsToken : Inventory
     void DoPopulate()
     {
         slots.Populate();
+        ignores.Populate();
     }
 
     override void DoEffect()
@@ -222,7 +223,11 @@ class SlotsToken : Inventory
             if (ignored == weap)
             {
                 ignored = 'None';
-                SlotDebug.LogVerbose("Weapon Switch Ignored");
+                SlotDebug.LogVerbose("Weapon Switch Ignored (Temp Ignore)");
+            }
+            else if (ignores.IsIgnored(weap))
+            {
+                SlotDebug.LogVerbose("Weapon Switch Ignored (Ignore List)");
             }
             else if (currWeapon == 'None')
             {
@@ -290,5 +295,12 @@ class SlotsToken : Inventory
             SwitchWeapon(currWeapon);
         else
             SwitchWeapon(lastWeapon);
+    }
+
+    //Ignore our current weapon
+    void DoIgnoreWeapon()
+    {
+        SlotDebug.LogVerbose("Ignoring Weapon");
+        ignores.UpdateIgnore(GetWeapon());
     }
 }

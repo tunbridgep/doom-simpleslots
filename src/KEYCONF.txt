@@ -1,8 +1,9 @@
 alias slots_lastweapon "netevent LastWeapon"
 defaultbind Q slots_lastweapon
 
-alias slots_config "netevent WeaponSlotConfig"
-defaultbind ALT slots_config
+alias +slots_config "netevent WeaponSlotConfig"
+alias -slots_config "netevent WeaponSlotConfigOff"
+defaultbind ALT +slots_config
 
 
 alias +slots_select_0 "netevent WeaponSlot0"
