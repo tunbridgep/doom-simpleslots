@@ -8,6 +8,10 @@ OptionMenu "SimpleSlotOptions"
 {
     Title "$SLOT_MAIN_TITLE"
     StaticText ""
+    Slider "$SLOT_DELAY", "slots_delay", 0,5,0.1,1
+    StaticText "$SLOT_DELAY_DESC"
+    StaticText "$SLOT_DELAY_DESC2"
+    StaticText ""
     Control "$SLOT_KEY_LASTWEAPON", "slots_lastweapon"
     StaticText "$SLOT_KEY_LASTWEAPON_DESC"
     StaticText "$SLOT_KEY_LASTWEAPON_DESC2"

@@ -3,6 +3,9 @@
 //Menu
 SLOT_MENUNAME = "Simple Slots";
 SLOT_MAIN_TITLE = "Simple Slots Options";
+SLOT_DELAY = "Minimum Usage Time (Seconds)";
+SLOT_DELAY_DESC = "How long a weapon must be selected for in order";
+SLOT_DELAY_DESC2 = "to be considered as a last used weapon.";
 SLOT_KEY_LASTWEAPON = "Select Last Used Weapon";
 SLOT_KEY_LASTWEAPON_DESC = "Selects the previously used weapon";
 SLOT_KEY_LASTWEAPON_DESC2 = "Weapons previously selected via slots aren't selected";

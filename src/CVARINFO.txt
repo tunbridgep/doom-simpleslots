@@ -1,7 +1,6 @@
 //save settings
 nosave server int slots_debug = 0;
-//server cheat int nosave_items_starting = 0;
-//nosave int nosave_style = 0;
+nosave server float slots_delay = 1.0;
 
 user string slots_ignore = "";
 

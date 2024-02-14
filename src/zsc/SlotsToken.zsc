@@ -170,10 +170,12 @@ class SlotsToken : Inventory
     Name lastWeapon; //The previous weapon we selected which was not ignored
     Name currWeapon; //The latest weapon we selected which was not ignored
     Name ignored; //Name of the currently ignored weapon. This is temporary and not added to the ignore list
+    Name goodWeapon; //Name of the currently selected weapon if it's valid for being a lastWeapon but hasn't been set yet.
     SlotManager slots;
     IgnoreList ignores;
     bool poweredUp; //Is our weapon a powered-up version?
     bool enableRelease; //Can we release a slot button
+    float timer;
 
     override void AttachToOwner(Actor other)
     {
@@ -189,8 +191,14 @@ class SlotsToken : Inventory
 
     override void DoEffect()
     {
+        timer += 1.0 / TICRATE;
+        //SlotDebug.LogVerbose("Timer: " .. timer);
         Super.DoEffect();
         RememberWeapons();
+        if (goodWeapon != "" && timer >= slots_delay)
+        {
+            SetLastWeapon();
+        }
     }
 
     private bool IsPending()
@@ -227,6 +235,7 @@ class SlotsToken : Inventory
         let weap = GetWeapon();
         if (actualCurrentWeapon != weap && weap != 'None' && !poweredUp) //changed weapon
         {
+            goodWeapon = "";
             if (ignored == weap)
             {
                 ignored = 'None';
@@ -239,15 +248,31 @@ class SlotsToken : Inventory
             else if (currWeapon == 'None')
             {
                 currWeapon = weap;
+                SlotDebug.LogVerbose("Switched Weapon. Ignored is: " .. ignored.. ", weap is: "..weap);
+            }
+            else if (weap == lastWeapon || weap == currWeapon || lastWeapon == "")
+            {
+                goodWeapon = weap;
+                SetLastWeapon();
             }
             else if (weap != currWeapon)
             {
-                lastWeapon = currWeapon;
-                currWeapon = weap;                
-                SlotDebug.LogVerbose("Switched Weapon. Ignored is: " .. ignored.. ", weap is: "..weap);
+                //Can't set it here, we have to wait for the timer to complete.
+                //So, just set our goodWeapon to let the timer know it's good to change lastweapon.
+                goodWeapon = weap;
             }
+            timer = 0;
             actualCurrentWeapon = weap;
         }
+    }
+
+    //Sets the lastweapon to our latest valid goodWeapon
+    void SetLastWeapon()
+    {
+        lastWeapon = currWeapon;
+        currWeapon = goodWeapon;
+        goodWeapon = "";
+        SlotDebug.LogVerbose("GoodWeapon set, setting lastWeapon because timer has expired.");
     }
 
     //Config a slot
