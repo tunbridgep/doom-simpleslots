@@ -6,6 +6,7 @@ struct IgnoreList
     
     void Populate()
     {
+        ignores.Clear();
         string convar = "slots_ignore";
         string list = CVar.GetCVar(convar,players[consoleplayer]).GetString();
         list.Split(ignores, ";", TOK_SKIPEMPTY);
@@ -59,6 +60,7 @@ struct SlotManager
     {
         for (int i = 0; i < slots.Size(); i++)
         {
+            slots[i].Clear();
             string convar = "slots_"..i.."_0";
             SlotDebug.LogVerbose("Populating Slots from "..convar);
 
@@ -236,13 +238,17 @@ class SlotsToken : Inventory
     private void RememberWeapons()
     {
         let weap = GetWeapon();
-        if (actualCurrentWeapon != weap && weap != currWeapon && weap != 'None' && !poweredUp) //changed weapon
+        if (actualCurrentWeapon != weap && weap != 'None' && !poweredUp) //changed weapon
         {
             goodWeapon = "";
             if (ignored == weap)
             {
                 ignored = 'None';
                 SlotDebug.LogVerbose("Weapon Switch Ignored (Temp Ignore)");
+            }
+            else if (weap == currWeapon)
+            {
+                //Do Nothing
             }
             else if (currWeapon == 'None' || !CurrValid())
             {
@@ -262,6 +268,7 @@ class SlotsToken : Inventory
             {
                 //Can't set it here, we have to wait for the timer to complete.
                 //So, just set our goodWeapon to let the timer know it's good to change lastweapon.
+                SlotDebug.LogVerbose("Setting goodWeapon to "..weap);
                 goodWeapon = weap;
             }
             timer = 0;
@@ -294,6 +301,11 @@ class SlotsToken : Inventory
         if (slotweap == 'None')
         {
             SlotDebug.LogVerbose("No Weapon in Slot");
+            enableRelease = false;
+        }
+        else if (slotweap == currWeapon)
+        {
+            SlotDebug.LogVerbose("Slot Weapon already selected");
             enableRelease = false;
         }
         else if (slotweap != weap)
