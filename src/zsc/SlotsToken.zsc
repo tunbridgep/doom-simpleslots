@@ -54,11 +54,12 @@ struct IgnoreList
 
 struct SlotManager
 {
-    Array<String> slots[10];
+    const NUM_SLOTS = 10;
+    Array<String> slots[NUM_SLOTS];
 
     void Populate()
     {
-        for (int i = 0; i < slots.Size(); i++)
+        for (int i = 0; i < NUM_SLOTS; i++)
         {
             slots[i].Clear();
             string convar = "slots_"..i.."_0";
