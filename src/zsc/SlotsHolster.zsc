@@ -2,7 +2,6 @@
 class SlotsHolster : Weapon
 {
     Name lastWeapon;
-	bool setCrosshair;
 
     void SetLastWeapon(Name weapon)
     {
@@ -16,24 +15,11 @@ class SlotsHolster : Weapon
 
     action void A_ConditionalCrosshair(int num)
     {
-		A_ResetCrosshair();
         if (slots_holster_hide_crosshair)
 		{
-			invoker.setCrosshair = true;
             A_SetCrosshair(num);
 		}
     }
-	
-	//Do this this way, so that if someone changes the crosshair setting while holstered,
-	//we make sure to reset it at the end, so we can't just use A_ConditionalCrosshair when deselecting
-	action void A_ResetCrosshair()
-	{
-		if (invoker.setCrosshair)
-		{
-			invoker.setCrosshair = false;
-            A_SetCrosshair(0);
-		}
-	}
 
     Default
     {
@@ -63,7 +49,7 @@ class SlotsHolster : Weapon
             Loop;
         Deselect:
             TNT1 AAAAAAAAA 1 A_Lower;
-            TNT1 A 1 A_ResetCrosshair;
+            TNT1 A 1 A_SetCrosshair(0);
             Loop;
         Fire:
         AltFire:
