@@ -30,6 +30,10 @@ OptionMenu "SimpleSlotWeaponSlots"
     Control "$SLOT_KEY_SLOT7", "+slots_select_7"
     Control "$SLOT_KEY_SLOT8", "+slots_select_8"
     Control "$SLOT_KEY_SLOT9", "+slots_select_9"
+    StaticText ""
+    Option "$SLOT_AUTO_IGNORE_SLOTS", "slots_auto_ignore_in_slots", YesNo
+    StaticText "$SLOT_AUTO_IGNORE_SLOTS_DESC"
+    StaticText "$SLOT_AUTO_IGNORE_SLOTS_DESC2"
 
 }
 

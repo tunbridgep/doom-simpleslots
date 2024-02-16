@@ -127,6 +127,16 @@ struct SlotManager
         return item;
     }
 
+    bool AnySlotContains(Name weapon)
+    {
+        for (int i = 0; i < NUM_SLOTS; i++)
+        {
+            if (slots[i].Find(weapon) != slots[i].Size())
+                return true;
+        }
+        return false;
+    }
+
     bool ValidWeapon(Name weapon)
     {
         let Weap = Weapon(players[consoleplayer].mo.FindInventory(weapon));
@@ -259,6 +269,10 @@ class SlotsToken : Inventory
             else if (ignores.IsIgnored(weap))
             {
                 SlotDebug.LogVerbose("Weapon Switch Ignored (Ignore List)");
+            }
+            else if (slots.AnySlotContains(weap) && slots_auto_ignore_in_slots)
+            {
+                SlotDebug.LogVerbose("Weapon Switch Ignored (Weapon in Slot)");
             }
             else if (weap == lastWeapon)
             {
