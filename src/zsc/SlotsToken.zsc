@@ -304,7 +304,7 @@ class SlotsToken : Inventory
             SlotDebug.LogVerbose("No Weapon in Slot");
             enableRelease = false;
         }
-        else if (slotweap == currWeapon)
+        else if (slotweap == currWeapon && slotweap == actualCurrentWeapon)
         {
             SlotDebug.LogVerbose("Slot Weapon already selected");
             enableRelease = false;
