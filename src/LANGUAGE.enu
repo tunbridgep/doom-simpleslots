@@ -5,6 +5,8 @@ SLOT_ADDED = "Added to slot %d";
 SLOT_REMOVED = "Removed from slot %d";
 SLOT_UPDATED = "Set to highest priority in slot %d";
 SLOT_ALREADY_SELECTED = "Weapon already selected";
+SLOT_IGNORED = "Weapon added to Ignore List";
+SLOT_UNIGNORED = "Weapon removed from Ignore List";
 
 //Menu
 SLOT_MENUNAME = "Simple Slots";

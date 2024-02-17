@@ -66,10 +66,7 @@ class SimpleSlotsHandler : SlotsBaseHandler
             doConfig = false;
 
         else if (e.Name == "LastWeapon")
-        {
             DoLast(token);
-            doConfig = false;
-        }
 
         //TODO: Do this better
         else if (e.Name == "WeaponSlot0")
@@ -94,12 +91,10 @@ class SimpleSlotsHandler : SlotsBaseHandler
             DoSlot(token,9);
         else if (e.Name == "WeaponSlotRelease")
         {
-            doConfig = false;
             token.DoWeaponSlotRelease();
         }
         else if (e.Name == "SlotsHolster")
         {
-            doConfig = false;
             token.DoHolster();
         }
     }

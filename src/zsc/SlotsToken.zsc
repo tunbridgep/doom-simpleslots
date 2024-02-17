@@ -38,17 +38,21 @@ struct IgnoreList
     void UpdateIgnore(String item)
     {
         let position = ignores.Find(item);
+        String text;
         if (position == ignores.Size())
         {
+            text = Stringtable.Localize("$SLOT_IGNORED");
             SlotDebug.LogVerbose("Ignoring " .. item);
             ignores.Push(item);
         }
         else
         {
+            text = Stringtable.Localize("$SLOT_UNIGNORED");
             SlotDebug.LogVerbose("No longer Ignoring " .. item);
             ignores.Delete(position);
         }
         Write();
+        Console.Printf(text);
     }
 }
 
@@ -362,7 +366,6 @@ class SlotsToken : Inventory
     //Ignore our current weapon
     void DoIgnoreWeapon()
     {
-        SlotDebug.LogVerbose("Ignoring Weapon");
         ignores.UpdateIgnore(GetWeapon());
     }
 
