@@ -320,7 +320,7 @@ class SlotsToken : Inventory
         }
         else if (slotweap == currWeapon && slotweap == actualCurrentWeapon)
         {
-            SlotDebug.LogVerbose("Slot Weapon already selected");
+            Console.printf(Stringtable.Localize("$SLOT_ALREADY_SELECTED"));
             enableRelease = false;
         }
         else if (slotweap != weap)
