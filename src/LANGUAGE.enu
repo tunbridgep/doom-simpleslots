@@ -1,5 +1,10 @@
 [enu default]
 
+//Messages
+SLOT_ADDED = "Added to slot %d";
+SLOT_REMOVED = "Removed from slot %d";
+SLOT_UPDATED = "Set to highest priority in slot %d";
+
 //Menu
 SLOT_MENUNAME = "Simple Slots";
 SLOT_MAIN_TITLE = "Simple Slots Options";
