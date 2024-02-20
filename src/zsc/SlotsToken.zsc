@@ -244,7 +244,6 @@ class SlotsToken : Inventory
     Name goodWeapon; //Name of the currently selected weapon if it's valid for being a lastWeapon but hasn't been set yet.
     SlotManager slots;
     IgnoreList ignores;
-    bool poweredUp; //Is our weapon a powered-up version?
     bool enableRelease; //Can we release a slot button
     float timer;
 
@@ -282,15 +281,17 @@ class SlotsToken : Inventory
     {
         let pend = Owner.Player.PendingWeapon;
         let weap = Owner.Player.ReadyWeapon;
+        let w = weap;
+
         if (pend != WP_NOCHANGE)
+            w = pend;
+
+        if (w)
         {
-            poweredUp = pend.bPOWERED_UP;
-            return pend.GetClassName();
-        }
-        else if (weap)
-        {
-            poweredUp = weap.bPOWERED_UP;
-            return weap.GetClassName();
+            if (w.bPOWERED_UP) //Handle Heretic Tome of Power Weapons
+                return w.SisterWeapon.GetClassName();
+            else
+                return w.GetClassName();
         }
         return 'None';
     }
@@ -312,7 +313,7 @@ class SlotsToken : Inventory
     private void RememberWeapons()
     {
         let weap = GetWeapon();
-        if (actualCurrentWeapon != weap && weap != 'None' && !poweredUp) //changed weapon
+        if (actualCurrentWeapon != weap && weap != 'None') //changed weapon
         {
             goodWeapon = "";
             if (ignored == weap)
@@ -416,7 +417,7 @@ class SlotsToken : Inventory
         SlotDebug.LogVerbose("last weapon press");
         
         let weap = GetWeapon();
-        if (weap != currWeapon && !poweredUp)
+        if (weap != currWeapon)
             SwitchWeapon(currWeapon);
         else if (lastWeapon != 'None')
             SwitchWeapon(lastWeapon);
