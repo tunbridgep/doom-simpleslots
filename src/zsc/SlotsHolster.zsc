@@ -1,14 +1,14 @@
 //A dummy weapon used to "holster" our current weapon
 class SlotsHolster : Weapon
 {
-    Name lastWeapon;
+    Weapon lastWeapon;
 
-    void SetLastWeapon(Name weapon)
+    void SetLastWeapon(Weapon weapon)
     {
         lastWeapon = weapon;
     }
 
-    Name GetLastWeapon()
+    Weapon GetLastWeapon()
     {
         return lastWeapon;
     }
@@ -30,6 +30,8 @@ class SlotsHolster : Weapon
         +WEAPON.CHEATNOTWEAPON
         +WEAPON.NODEATHINPUT
         +WEAPON.NODEATHDESELECT
+        +WEAPON.AMMO_OPTIONAL
+        +WEAPON.NOAUTOSWITCHTO
         +INVENTORY.UNDROPPABLE
         +INVENTORY.ALWAYSPICKUP
         +INVENTORY.HUBPOWER
@@ -53,7 +55,7 @@ class SlotsHolster : Weapon
             Loop;
         Fire:
         AltFire:
-            TNT1 A 1 A_SelectWeapon(invoker.lastWeapon);
+            TNT1 A 1 A_SelectWeapon(invoker.lastWeapon.GetClassName());
             Goto Ready;
     }
 }

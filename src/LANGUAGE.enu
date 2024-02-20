@@ -1,12 +1,13 @@
 [enu default]
 
 //Messages
-SLOT_ADDED = "Added to slot %d";
-SLOT_REMOVED = "Removed from slot %d";
-SLOT_UPDATED = "Set to highest priority in slot %d";
+SLOT_EMPTY = "Slot is empty";
+SLOT_ADDED = "%s added to slot %d";
+SLOT_REMOVED = "%s Removed from slot %d";
+SLOT_UPDATED = "%s set to highest priority in slot %d";
 SLOT_ALREADY_SELECTED = "Weapon already selected";
-SLOT_IGNORED = "Weapon added to Ignore List";
-SLOT_UNIGNORED = "Weapon removed from Ignore List";
+SLOT_IGNORED = "%s added to Ignore List";
+SLOT_UNIGNORED = "%s removed from Ignore List";
 
 //Menu
 SLOT_MENUNAME = "Simple Slots";

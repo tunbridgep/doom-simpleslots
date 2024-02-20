@@ -104,29 +104,31 @@ struct IgnoreList
     }
 
 
-    bool IsIgnored(String item)
+    bool IsIgnored(Weapon item)
     {
-        return ignores.Find(item) != ignores.Size() || item == "SlotsHolster" || item == "MotoHandles";
+        let nm = item.GetClassName();
+        return ignores.Find(nm) != ignores.Size() || nm == "SlotsHolster" || nm == "MotoHandles";
     }
 
-    void UpdateIgnore(String item)
+    void UpdateIgnore(Weapon item)
     {
-        let position = ignores.Find(item);
+        let nm = item.GetClassName();
+        let position = ignores.Find(nm);
         String text;
         if (position == ignores.Size())
         {
             text = Stringtable.Localize("$SLOT_IGNORED");
-            SlotDebug.LogVerbose("Ignoring " .. item);
-            ignores.Push(item);
+            SlotDebug.LogVerbose("Ignoring " .. nm);
+            ignores.Push(nm);
         }
         else
         {
             text = Stringtable.Localize("$SLOT_UNIGNORED");
-            SlotDebug.LogVerbose("No longer Ignoring " .. item);
+            SlotDebug.LogVerbose("No longer Ignoring " .. nm);
             ignores.Delete(position);
         }
         Write();
-        Console.Printf(text);
+        Console.Printf(text,item.GetTag());
     }
 }
 
@@ -135,9 +137,11 @@ struct SlotManager
 {
     const NUM_SLOTS = 10;
     CVarContainer slots[NUM_SLOTS];
+    Actor owner;
 
-    void Populate()
+    void Populate(Actor own)
     {
+        owner = own;
         for (int i = 0; i < NUM_SLOTS; i++)
         {
             slots[i].Populate("slots_"..i,5);
@@ -151,56 +155,64 @@ struct SlotManager
         SlotDebug.LogVerbose("Writing Slot List (Slot "..slot..")");
     }
 
-    void UpdateSlotItem(int slot, String item)
+    void UpdateSlotItem(int slot, Weapon wpn)
     {
+        String item = wpn.GetClassName();
+
         let position = slots[slot].Find(item);
 
         if (position == slots[slot].Size()) //If it's not in slot, push it
         {
             slots[slot].Push(item);
-            Console.printf(Stringtable.Localize("$SLOT_ADDED"),slot+1);
+            Console.printf(Stringtable.Localize("$SLOT_ADDED"),wpn.GetTag(),slot+1);
         }
         else if (position < slots[slot].Size() - 1) //It's low priority, bump it to the top
         {
             slots[slot].Delete(position);
             slots[slot].Push(item);
-            Console.printf(Stringtable.Localize("$SLOT_UPDATED"),slot+1);
+            Console.printf(Stringtable.Localize("$SLOT_UPDATED"),wpn.GetTag(),slot+1);
         }
         else //it's highest priority, remove it
         {
             slots[slot].Pop();
-            Console.printf(Stringtable.Localize("$SLOT_REMOVED"),slot+1);
+            Console.printf(Stringtable.Localize("$SLOT_REMOVED"),wpn.GetTag(),slot+1);
         }
         WriteSlot(slot);
     }
 
-    Name GetSlotItem(int slot)
+    Weapon GetSlotItem(int slot)
     {
-        let item = 'None';
+        Weapon re = null;
         let size = slots[slot].Size();
         if (size > 0)
         {
             for (int i = 0;i < size;i++)
             {
-                if (ValidWeapon(slots[slot].GetAt(i)))
-                    item = slots[slot].GetAt(i);
+                let item = slots[slot].GetAt(i);
+                if (ValidWeapon(item))
+                {
+                    let wp = Weapon(owner.FindInventory(item));
+                    if (wp)
+                        re = wp;
+                }
             }
         }
         
-        return item;
+        return re;
     }
 
-    bool AnySlotContains(Name weapon)
+    bool AnySlotContains(Weapon wpn)
     {
+        let nm = wpn.GetClassName();
         for (int i = 0; i < NUM_SLOTS; i++)
         {
-            if (slots[i].Find(weapon) != slots[i].Size())
+            if (slots[i].Find(nm) != slots[i].Size())
                 return true;
         }
         return false;
     }
 
-    bool ValidWeapon(Name weapon)
+    private bool ValidWeapon(String weapon)
     {
         let Weap = Weapon(players[consoleplayer].mo.FindInventory(weapon));
         return Weap != null;
@@ -237,15 +249,16 @@ class SlotsToken : Inventory
         Inventory.MaxAmount 1;
     }
 
-    Name actualCurrentWeapon; //our ACTUAL currently selected weapon, used to know when we change weapon
-    Name lastWeapon; //The previous weapon we selected which was not ignored
-    Name currWeapon; //The latest weapon we selected which was not ignored
-    Name ignored; //Name of the currently ignored weapon. This is temporary and not added to the ignore list
-    Name goodWeapon; //Name of the currently selected weapon if it's valid for being a lastWeapon but hasn't been set yet.
+    Weapon actualCurrentWeapon; //our ACTUAL currently selected weapon, used to know when we change weapon
+    Weapon lastWeapon; //The previous weapon we selected which was not ignored
+    Weapon currWeapon; //The latest weapon we selected which was not ignored
+    Weapon ignored; //The currently ignored weapon. This is temporary and not added to the ignore list
+    Weapon goodWeapon; //The currently selected weapon if it's valid for being a lastWeapon but hasn't been set yet.
     SlotManager slots;
     IgnoreList ignores;
     bool enableRelease; //Can we release a slot button
     float timer;
+    const HOLSTER_NAME = "SlotsHolster";
 
     override void AttachToOwner(Actor other)
     {
@@ -255,7 +268,7 @@ class SlotsToken : Inventory
 
     void DoPopulate()
     {
-        slots.Populate();
+        slots.Populate(owner);
         ignores.Populate();
     }
 
@@ -265,7 +278,7 @@ class SlotsToken : Inventory
         //SlotDebug.LogVerbose("Timer: " .. timer);
         Super.DoEffect();
         RememberWeapons();
-        if (goodWeapon != "" && timer >= slots_delay)
+        if (goodWeapon != null && timer >= slots_delay)
         {
             SetLastWeapon();
         }
@@ -277,53 +290,54 @@ class SlotsToken : Inventory
         return pend != WP_NOCHANGE;
     }
 
-    private Name GetWeapon()
+    private Weapon GetWeapon()
     {
         let weap = Owner.Player.ReadyWeapon;
 
         if (weap)
         {
             if (weap.bPOWERED_UP) //Handle Heretic Tome of Power Weapons
-                return weap.SisterWeapon.GetClassName();
+                return weap.SisterWeapon;
             else
-                return weap.GetClassName();
+                return weap;
         }
-        return 'None';
+        return null;
     }
 
-    private void SwitchWeapon(Name newWeapon)
+    private void SwitchWeapon(Weapon newWeapon)
     {
+        let wp = newWeapon.GetClassName();
         enableRelease = false;
-        owner.A_SelectWeapon(newWeapon);
-        SlotDebug.LogVerbose("Switching Weapon to: "..newWeapon);
-        if (newWeapon != "SlotsHolster")
+        owner.A_SelectWeapon(wp);
+        SlotDebug.LogVerbose("Switching Weapon to: "..wp);
+        if (wp != "SlotsHolster")
             owner.TakeInventory("SlotsHolster",9999);
     }
     
     private bool CurrValid()
     {
-        return owner.FindInventory(currWeapon) != null;
+        return owner.FindInventory(currWeapon.GetClassName()) != null;
     }
 
     private void RememberWeapons()
     {
         let weap = GetWeapon();
-        if (actualCurrentWeapon != weap && weap != 'None') //changed weapon
+        if (actualCurrentWeapon != weap && weap != null) //changed weapon
         {
-            goodWeapon = "";
+            goodWeapon = null;
             if (ignored == weap)
             {
-                ignored = 'None';
+                ignored = null;
                 SlotDebug.LogVerbose("Weapon Switch Ignored (Temp Ignore)");
             }
             else if (weap == currWeapon)
             {
                 //Do Nothing
             }
-            else if (currWeapon == 'None' || !CurrValid())
+            else if (currWeapon == null || !CurrValid())
             {
                 currWeapon = weap;
-                SlotDebug.LogVerbose("No Curr Weapon Set. Setting to "..weap);
+                SlotDebug.LogVerbose("No Curr Weapon Set. Setting to "..weap.GetClassName());
             }
             else if (ignores.IsIgnored(weap))
             {
@@ -342,7 +356,7 @@ class SlotsToken : Inventory
             {
                 //Can't set it here, we have to wait for the timer to complete.
                 //So, just set our goodWeapon to let the timer know it's good to change lastweapon.
-                SlotDebug.LogVerbose("Setting goodWeapon to "..weap);
+                SlotDebug.LogVerbose("Setting goodWeapon to "..weap.GetClassName());
                 goodWeapon = weap;
             }
             timer = 0;
@@ -355,7 +369,7 @@ class SlotsToken : Inventory
     {
         lastWeapon = currWeapon;
         currWeapon = goodWeapon;
-        goodWeapon = "";
+        goodWeapon = null;
         SlotDebug.LogVerbose("GoodWeapon set, setting lastWeapon because timer has expired.");
     }
 
@@ -372,9 +386,10 @@ class SlotsToken : Inventory
     {
         let weap = GetWeapon();
         let slotweap = slots.GetSlotItem(slot);
-        if (slotweap == 'None')
+        if (slotweap == null)
         {
-            SlotDebug.LogVerbose("No Weapon in Slot");
+            //SlotDebug.LogVerbose("No Weapon in Slot");
+            Console.printf(Stringtable.Localize("$SLOT_EMPTY"));
             enableRelease = false;
         }
         else if (slotweap == currWeapon && slotweap == actualCurrentWeapon)
@@ -384,7 +399,7 @@ class SlotsToken : Inventory
         }
         else if (slotweap != weap)
         {
-            SlotDebug.LogVerbose("slot "..slot.." press. Selecting " .. slotweap);
+            SlotDebug.LogVerbose("slot "..slot.." press. Selecting " .. slotweap.GetClassName());
             ignored = slotweap;
             SwitchWeapon(slotweap);
             enableRelease = IsPending();
@@ -392,7 +407,7 @@ class SlotsToken : Inventory
         }
         else
         {
-            ignored = 'None';
+            ignored = null;
             SwitchWeapon(currWeapon);
             SlotDebug.LogVerbose("Switching back to previous weapon");
         }
@@ -414,7 +429,7 @@ class SlotsToken : Inventory
         let weap = GetWeapon();
         if (weap != currWeapon)
             SwitchWeapon(currWeapon);
-        else if (lastWeapon != 'None')
+        else if (lastWeapon != null)
             SwitchWeapon(lastWeapon);
     }
 
@@ -428,25 +443,24 @@ class SlotsToken : Inventory
     void DoHolster()
     {
         let weap = GetWeapon();
-        let holster = "SlotsHolster";
-        let holsterItem = SlotsHolster(owner.FindInventory(holster));
+        let holster = SlotsHolster(owner.FindInventory(HOLSTER_NAME));
 
         if (weap == holster)
         {
-            ignored = holsterItem.GetLastWeapon();
-            SwitchWeapon(holsterItem.GetLastWeapon());
+            ignored = holster.GetLastWeapon();
+            SwitchWeapon(holster.GetLastWeapon());
         }
         else
         {
-            if (holsterItem == null)
+            if (holster== null)
             {
-                owner.GiveInventory(holster,1);
-                holsterItem = SlotsHolster(owner.FindInventory(holster));
+                owner.GiveInventory(HOLSTER_NAME,1);
+                holster = SlotsHolster(owner.FindInventory(HOLSTER_NAME));
             }
 
             ignored = holster;
-            let prev = actualCurrentWeapon == "SlotsHolster" ? currWeapon : actualCurrentWeapon;
-            holsterItem.SetLastWeapon(prev);
+            let prev = actualCurrentWeapon == holster ? currWeapon : actualCurrentWeapon;
+            holster.SetLastWeapon(prev);
             SwitchWeapon(holster);
             ignored = prev;
             SlotDebug.LogVerbose("Holstering Weapon");
