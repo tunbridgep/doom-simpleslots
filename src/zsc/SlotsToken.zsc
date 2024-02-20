@@ -107,7 +107,7 @@ struct IgnoreList
     bool IsIgnored(Weapon item)
     {
         let nm = item.GetClassName();
-        return ignores.Find(nm) != ignores.Size() || nm == "SlotsHolster" || nm == "MotoHandles";
+        return ignores.Find(nm) != ignores.Size();
     }
 
     void UpdateIgnore(Weapon item)
@@ -217,19 +217,6 @@ struct SlotManager
         let Weap = Weapon(players[consoleplayer].mo.FindInventory(weapon));
         return Weap != null;
     }
-
-    /*
-    private void GetPlayerWeapons()
-    {
-        for (int i = 0; i < 9;i++)
-        {
-            for (int j = 0;j < player.weapons.SlotSize(i))
-            {
-                let slotweaps = player.weapons.GetWeapon(i,j);
-            }
-        }
-    }
-    */
 }
 
 class SlotsToken : Inventory
@@ -290,9 +277,35 @@ class SlotsToken : Inventory
         return pend != WP_NOCHANGE;
     }
 
+    /*
+    //Loops through the players weapons, and finds the highest weapon
+    //that it can, on whatever slot, to set as our default lastweapon
+    private void SetStartingLastWeapon()
+    {
+        Weapon findLast;
+        Weapon weap = owner.Player.PendingWeapon;
+        for (int i = 0; i < 4;i++)
+        {
+            SlotDebug.LogVerbose("Checking Slot: "..i);
+            for (int j = 0;j < owner.Player.weapons.SlotSize(i);j++)
+            {
+                let slotweap = Weapon(owner.FindInventory(owner.player.weapons.GetWeapon(i,j)));
+                if (slotweap)
+                {
+                    SlotDebug.LogVerbose("Checking Slot Weapon: "..slotweap.GetClassName());
+                    if (weap != slotweap)
+                        findLast = slotweap;
+                }
+            }
+        }
+
+        lastWeapon = findLast;
+    }
+    */
+
     private Weapon GetWeapon()
     {
-        let weap = Owner.Player.ReadyWeapon;
+        let weap = owner.Player.ReadyWeapon;
 
         if (weap)
         {
@@ -319,6 +332,13 @@ class SlotsToken : Inventory
         return owner.FindInventory(currWeapon.GetClassName()) != null;
     }
 
+    //Known bad weapons that should NEVER be allowed into any slot or last weapon selection for any reason
+    private bool IsBadWeapon(Weapon weap)
+    {
+        let nm = weap.GetClassName();
+        return nm == "SlotsHolster" || nm == "MotoHandles";
+    }
+
     private void RememberWeapons()
     {
         let weap = GetWeapon();
@@ -339,11 +359,15 @@ class SlotsToken : Inventory
                 currWeapon = weap;
                 SlotDebug.LogVerbose("No Curr Weapon Set. Setting to "..weap.GetClassName());
             }
-            else if (ignores.IsIgnored(weap))
+            else if (IsBadWeapon(weap))
+            {
+                SlotDebug.LogVerbose("Weapon Switch Ignored (Bad Weapon)");
+            }
+            else if (ignores.IsIgnored(weap) && lastWeapon != null)
             {
                 SlotDebug.LogVerbose("Weapon Switch Ignored (Ignore List)");
             }
-            else if (slots.AnySlotContains(weap) && slots_auto_ignore_in_slots)
+            else if (slots.AnySlotContains(weap) && slots_auto_ignore_in_slots && lastWeapon != null)
             {
                 SlotDebug.LogVerbose("Weapon Switch Ignored (Weapon in Slot)");
             }
@@ -377,8 +401,12 @@ class SlotsToken : Inventory
     void DoConfigSlot(int slot)
     {
         SlotDebug.LogVerbose("slot "..slot.." config press");
-        slots.UpdateSlotItem(slot,GetWeapon());
-        enableRelease = false;
+        let weap = GetWeapon();
+        if (!IsBadWeapon(weap))
+        {
+            slots.UpdateSlotItem(slot,GetWeapon());
+            enableRelease = false;
+        }
     }
 
     //Selecting a slot
@@ -436,7 +464,9 @@ class SlotsToken : Inventory
     //Ignore our current weapon
     void DoIgnoreWeapon()
     {
-        ignores.UpdateIgnore(GetWeapon());
+        let weap = GetWeapon();
+        if (!IsBadWeapon(weap))
+            ignores.UpdateIgnore(GetWeapon());
     }
 
     //Handle Holstering
