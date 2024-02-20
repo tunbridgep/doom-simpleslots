@@ -1,38 +1,112 @@
-//This handles most aspects of the player slot system
-
-struct IgnoreList
+//This is responsible for converting a certain number of CVARS to and from arrays
+//Which allows us to split one array into multiple cvars, to make sure we don't exceed Doom's CVAR limit
+struct CvarContainer
 {
-    Array<String> ignores;
-    
-    void Populate()
-    {
-        ignores.Clear();
-        string convar = "slots_ignore";
-        string list = CVar.GetCVar(convar,players[consoleplayer]).GetString();
-        list.Split(ignores, ";", TOK_SKIPEMPTY);
+    Array<string> values;
+    String convar;
+    int convars;
 
-        SlotDebug.LogVerbose("Populated Ignore List with "..ignores.Size().." items");
+    void Populate(String cv, int num)
+    {
+        convar = cv;
+        convars = num;
+        values.Clear();
+        for (int i = 0;i < num;i++)
+        {
+            string list = CVar.GetCVar(convar.."_"..i,players[consoleplayer]).GetString();
+            list.Split(values, ";", TOK_SKIPEMPTY);
+        }
     }
     
     void Write()
     {
-        string convar = "slots_ignore";
+        string write_text;
 
-        string convar_write;
-        for (int i = 0; i < ignores.Size(); i++)
+        int cv_count = 0;
+        for (int i = 0; i < values.Size(); i++)
         {
-            convar_write.AppendFormat(ignores[i]..';');
-        }
+            //If we try to write to the current cvar, make sure it's not too long
+            //If it is, move to the next cvar
+            if ((write_text..values[i]..';').CodePointCount() > 256)
+            {
+                WriteCvar(convar.."_"..cv_count,write_text);
+                write_text = "";
+                SlotDebug.LogVerbose("("..convar.."_"..cv_count..") cvar Full, Incrementing cv_count to "..cv_count);
+                cv_count++;
+            }
+            
+            if (cv_count >= convars)
+                return;
 
-        SlotDebug.LogVerbose("Writing Ignore List ("..convar_write..") to " .. convar);
-        CVar writevar = CVar.FindCVar(convar); //For some reason this doesn't work (not null, just doesn't write) when we use GetCVar()...
+            write_text.AppendFormat(values[i]..';');
+        }
+        WriteCvar(convar.."_"..cv_count,write_text);
+    }
+
+    private void WriteCvar(String cv, String convar_write)
+    {
+        //For some reason this doesn't work (not null, just doesn't write) when we use GetCVar()...
+        CVar writevar = CVar.FindCVar(cv);
         writevar.SetString(convar_write);
+    }
+
+    String GetAt(int index)
+    {
+        return values[index];
+    }
+
+    int Find(String item)
+    {
+        return values.Find(item);
+    }
+    
+    int Size()
+    {
+        return values.Size();
+    }
+    
+    void Insert(uint index, String value)
+    {
+        values.Insert(index,value);
+    }
+    
+    void Delete(uint index, int deleteCount = 1)
+    {
+        values.Delete(index,deleteCount);
+    }
+
+    int Push(String value)
+    {
+        return values.Push(value);
+    }
+
+    bool Pop()
+    {
+        return values.Pop();
+    }
+}
+
+//This handles ignored weapons
+struct IgnoreList
+{
+    CvarContainer ignores;
+    
+    void Populate()
+    {
+        ignores.Populate("slots_ignore",5);
+        SlotDebug.LogVerbose("Populated Ignore List with "..ignores.values.Size().." items");
+    }
+    
+    void Write()
+    {
+        ignores.Write();
+        SlotDebug.LogVerbose("Writing Ignore List");
     }
 
 
     bool IsIgnored(String item)
     {
-        return ignores.Find(item) != ignores.Size() || item == "SlotsHolster";
+        return ignores.Find(item) != ignores.Size() || item == "SlotsHolster" || item == "MotoHandles";
     }
 
     void UpdateIgnore(String item)
@@ -56,40 +130,25 @@ struct IgnoreList
     }
 }
 
+//This handles most aspects of the player slot system
 struct SlotManager
 {
     const NUM_SLOTS = 10;
-    Array<String> slots[NUM_SLOTS];
+    CVarContainer slots[NUM_SLOTS];
 
     void Populate()
     {
         for (int i = 0; i < NUM_SLOTS; i++)
         {
-            slots[i].Clear();
-            string convar = "slots_"..i.."_0";
-            SlotDebug.LogVerbose("Populating Slots from "..convar);
-
-            string list = CVar.GetCVar(convar,players[consoleplayer]).GetString();
-            list.Split(slots[i], ";", TOK_SKIPEMPTY);
+            slots[i].Populate("slots_"..i,5);
         }
         SlotDebug.LogVerbose("Populated Slots List");
     }
 
     void WriteSlot(int slot)
     {
-        int total_convars = 5;
-        string convar = "slots_"..slot.."_0";
-
-        string convar_write;
-        for (int i = 0; i < slots[slot].Size(); i++)
-        {
-            convar_write = convar_write..slots[slot][i]..';';
-        }
-
-        SlotDebug.LogVerbose("Writing Slot List ("..convar_write..") to " .. convar);
-        CVar writevar = CVar.FindCVar(convar); //For some reason this doesn't work (not null, just doesn't write) when we use GetCVar()...
-        writevar.SetString(convar_write);
-
+        slots[slot].Write();
+        SlotDebug.LogVerbose("Writing Slot List (Slot "..slot..")");
     }
 
     void UpdateSlotItem(int slot, String item)
@@ -123,8 +182,8 @@ struct SlotManager
         {
             for (int i = 0;i < size;i++)
             {
-                if (ValidWeapon(slots[slot][i]))
-                    item = slots[slot][i];
+                if (ValidWeapon(slots[slot].GetAt(i)))
+                    item = slots[slot].GetAt(i);
             }
         }
         

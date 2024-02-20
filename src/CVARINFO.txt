@@ -4,7 +4,11 @@ nosave server float slots_delay = 1.0;
 nosave user bool slots_auto_ignore_in_slots = false;
 nosave user bool slots_holster_hide_crosshair = true;
 
-nosave user string slots_ignore = "";
+nosave user string slots_ignore_0 = "";
+nosave user string slots_ignore_1 = "";
+nosave user string slots_ignore_2 = "";
+nosave user string slots_ignore_3 = "";
+nosave user string slots_ignore_4 = "";
 
 nosave user string slots_0_0 = "";
 nosave user string slots_0_1 = "";
@@ -13,19 +17,55 @@ nosave user string slots_0_3 = "";
 nosave user string slots_0_4 = "";
 
 nosave user string slots_1_0 = "";
+nosave user string slots_1_1 = "";
+nosave user string slots_1_2 = "";
+nosave user string slots_1_3 = "";
+nosave user string slots_1_4 = "";
 
 nosave user string slots_2_0 = "";
+nosave user string slots_2_1 = "";
+nosave user string slots_2_2 = "";
+nosave user string slots_2_3 = "";
+nosave user string slots_2_4 = "";
 
 nosave user string slots_3_0 = "";
+nosave user string slots_3_1 = "";
+nosave user string slots_3_2 = "";
+nosave user string slots_3_3 = "";
+nosave user string slots_3_4 = "";
 
 nosave user string slots_4_0 = "";
+nosave user string slots_4_1 = "";
+nosave user string slots_4_2 = "";
+nosave user string slots_4_3 = "";
+nosave user string slots_4_4 = "";
 
 nosave user string slots_5_0 = "";
+nosave user string slots_5_1 = "";
+nosave user string slots_5_2 = "";
+nosave user string slots_5_3 = "";
+nosave user string slots_5_4 = "";
 
 nosave user string slots_6_0 = "";
+nosave user string slots_6_1 = "";
+nosave user string slots_6_2 = "";
+nosave user string slots_6_3 = "";
+nosave user string slots_6_4 = "";
 
 nosave user string slots_7_0 = "";
+nosave user string slots_7_1 = "";
+nosave user string slots_7_2 = "";
+nosave user string slots_7_3 = "";
+nosave user string slots_7_4 = "";
 
 nosave user string slots_8_0 = "";
+nosave user string slots_8_1 = "";
+nosave user string slots_8_2 = "";
+nosave user string slots_8_3 = "";
+nosave user string slots_8_4 = "";
 
 nosave user string slots_9_0 = "";
+nosave user string slots_9_1 = "";
+nosave user string slots_9_2 = "";
+nosave user string slots_9_3 = "";
+nosave user string slots_9_4 = "";

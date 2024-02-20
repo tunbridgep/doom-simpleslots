@@ -6,17 +6,23 @@ A simple quickswitch mod for gzdoom, attempting to improve quality of life by ma
 
 * ZScript based
 * "Last weapon used" key, similar to Half-Life
+* Holster key, which lowers your current weapon and hides the crosshair.
 * The ability to create "Slots"
     * Slots are like special versions of the number keys
-    * Slots can be "hold" or "toggle"
+    * Slots can be "hold" or "toggle" depending on how long you press the button for
     * The highest-priority weapon in the slot will be selected, otherwise it will go down the list
     * Can dynamically assign weapons to/from slots using hotkeys
     * Weapons selected via Slots don't count when using Last-Weapon key, so they are good for "quick" selections like melee weapons
-* Works for all Doom-Engine games including Doom, Doom 2, Heretic, Hexen and Strife, as well as any other IWADs or PWADs
+* Works for all Doom-Engine games including Doom, Doom 2, Heretic, Hexen and Strife, as well as any other IWADs or PWADs including TCs like Ashes.
 
 ## Installation and Usage ##
 
 Just run it in GZDoom alongside any other mod.
+
+This mod modifies Crosshair #5. This is usually the "right angle" crosshair, which is replaced by a blank crosshair.
+Project Brutality modifies the same crosshair to also be blank, making these mods compatible.
+
+This mod will conflict with other mods that change Crosshair #5, and players who use that crosshair will no longer be able to use it.
 
 ## Building ##
 
@@ -47,7 +53,6 @@ For questions or feature suggestions, feel free to create an issue on the issues
 
 Checkout my other mods on github
 
-* [Simple Saving](https://github.com/tunbridgep/doom-simplesaving) - prevent savescumming by requiring resources to save
 * [Simple Teleporter Effects](https://github.com/tunbridgep/doom-simpleteleportereffects) - add particle effects to any teleporter in any map in a compatible way
 * [Simple Saving](https://github.com/tunbridgep/doom-simplesaving) - remove save scumming and tie saving to resource usage.
 * [Simple Inventory Items](https://github.com/tunbridgep/doom-inventoryitems) - make most Doom powerups usable from the inventory bar in a compatible way.
