@@ -14,27 +14,11 @@ class SimpleSlotsHandler : SlotsBaseHandler
             SlotDebug.LogVerbose("Token Populating");
             item.DoPopulate();
         }
-
     }
 
     override void UniquePlayerEntered(Actor Player, bool returning)
     {
         SetupTokens(Player);
-    }
-
-    override void UniqueWorldLoaded(WorldEvent e)
-    {
-        if (!e.IsSaveGame)
-            return;
-
-        for (int i = 0;i < players.Size();i++)
-        {
-            if (playeringame[i])
-            {
-                let player = players[i].mo;
-                SetupTokens(player);
-            }
-        }
     }
     
     bool doConfig;

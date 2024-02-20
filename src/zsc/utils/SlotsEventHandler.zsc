@@ -29,5 +29,16 @@ class SlotsBaseHandler : StaticEventHandler
             return;
         
         UniqueWorldLoaded(e);
+
+        if (e.IsSavegame)
+        {
+            for (int i = 0;i < players.Size();i++)
+            {
+                if (playeringame[i])
+                {
+                    UniquePlayerEntered(players[i].mo, false);
+                }
+            }
+        }
     }
 } 
