@@ -279,19 +279,14 @@ class SlotsToken : Inventory
 
     private Name GetWeapon()
     {
-        let pend = Owner.Player.PendingWeapon;
         let weap = Owner.Player.ReadyWeapon;
-        let w = weap;
 
-        if (pend != WP_NOCHANGE)
-            w = pend;
-
-        if (w)
+        if (weap)
         {
-            if (w.bPOWERED_UP) //Handle Heretic Tome of Power Weapons
-                return w.SisterWeapon.GetClassName();
+            if (weap.bPOWERED_UP) //Handle Heretic Tome of Power Weapons
+                return weap.SisterWeapon.GetClassName();
             else
-                return w.GetClassName();
+                return weap.GetClassName();
         }
         return 'None';
     }
