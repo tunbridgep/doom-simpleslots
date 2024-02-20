@@ -44,7 +44,7 @@ It's recommended to use slots for "quickswitching" between weapons that are need
 
 **Example 1: Slot Usage**
 
-I am playing Project Brutality. My last selected weapon was the M2 Plasma Rifle. I currently have the Shotgun equipped. I have the Double Barrel Shotgun and the Quad Shotgun assigned to Slot 1. While playing, I am suddenly confronted by a Baron of Hell. I quickly press the Q key to switch to my M2 Plasma Rifle. After blasting the Baron, I run out of ammo and need to reload, leaving me sitting ducks against their attacks. Thinking quickly, I hold my Slot 1 key, pulling out the Double Barrel Shotgun. I blast the Baron, finally killing it. I then release the slot key, switching back to the M2 plasma rifle, allowing me to reload. Seeing some weaker enemies ahead, I press the Q key again to switch back to the Shotgun, leaving my M2 Plasma Rifle ready to be selected on a moments notice with the Q key.
+I am playing Project Brutality. My last selected weapon was the M2 Plasma Rifle. I currently have the Shotgun equipped. I have the Double Barrel Shotgun assigned to Slot 1. While playing, I am suddenly confronted by a Baron of Hell. I quickly press the Q key to switch to my M2 Plasma Rifle. After blasting the Baron, I run out of ammo and need to reload, leaving me sitting ducks against their attacks. Thinking quickly, I hold my Slot 1 key, pulling out the Double Barrel Shotgun. I blast the Baron, finally killing it. I then release the slot key, switching back to the M2 plasma rifle, allowing me to reload. Seeing some weaker enemies ahead, I press the Q key again to switch back to the Shotgun, leaving my M2 Plasma Rifle ready to be selected on a moments notice with the Q key.
 
 **Example 2: Slot Priority**
 
