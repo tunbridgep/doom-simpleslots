@@ -50,7 +50,7 @@ I am playing Project Brutality. My last selected weapon was the M2 Plasma Rifle.
 
 I am playing Project Brutality. I have assigned the Axe and the Chainsaw to Slot 1. While exploring, I am ambushed by a large number of Pinky demons. They are too strong to take out with Project Brutality's melee button, so I hold my Slot 1 key instead, selecting the Axe. After chopping through them, I release the key to switch back to my previous weapon. Later in the level, I find the Chainsaw. In a subsequent ambush, I am surrounded by pinkies and revenants, as well as other powerful demons. Holding my Slot 1 key, I pull out the chainsaw, cutting through them with ease. Then I release the key to switch back to my previous weapon.
 
-**Example 3: Ignoring Weapons **
+**Example 3: Ignoring Weapons**
 
 I am playing Ashes 2063. While using the Shotgun, I enter a dark area. I previously used the FAL, so it's my previous weapon. I press G to pull out my lantern, which works by automatically switching to the Crowbar, which has been set as ignored. While in the darkness, I see an enemy. I press Q to switch away from the crowbar back to my shotgun. While fighting I run out of shotgun ammo, and in a panic, I press Q again to switch from the shotgun to the FAL, allowing me to finish off the enemy.
 
