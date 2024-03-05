@@ -3,6 +3,7 @@ nosave server int slots_debug = 0;
 nosave server float slots_delay = 1.0;
 nosave user bool slots_auto_ignore_in_slots = false;
 nosave user bool slots_holster_hide_crosshair = true;
+nosave user bool slots_check_ammo = true;
 
 nosave user string slots_ignore_0 = "";
 nosave user string slots_ignore_1 = "";

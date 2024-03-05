@@ -197,6 +197,11 @@ struct SlotManager
                 }
             }
         }
+        else
+        {
+            //SlotDebug.LogVerbose("No Weapon in Slot");
+            Console.Printf(Stringtable.Localize("$SLOT_EMPTY"));
+        }
         
         return re;
     }
@@ -212,10 +217,35 @@ struct SlotManager
         return false;
     }
 
-    private bool ValidWeapon(String weapon)
+    private bool ValidWeapon(String weapon, bool ammoMessage = true)
     {
-        let Weap = Weapon(players[consoleplayer].mo.FindInventory(weapon));
-        return Weap != null;
+        let p = players[consoleplayer].mo;
+        let Weap = Weapon(p.FindInventory(weapon));
+
+        if (Weap)
+        {
+            if (slots_check_ammo)
+            {
+                Ammo ammo1 = Ammo(p.FindInventory(Weap.AmmoType1));
+                Ammo ammo2 = Ammo(p.FindInventory(Weap.AmmoType2));
+
+                bool hasAmmo1 = !ammo1 || Weap.bAMMO_OPTIONAL || ammo1.Amount >= Weap.AmmoUse1;
+                bool hasAmmo2 = !ammo2 || Weap.bALT_AMMO_OPTIONAL || ammo2.Amount >= Weap.AmmoUse2;
+
+                if (!hasAmmo1 && !hasAmmo2)
+                {
+                    if (ammoMessage)
+                    {
+                        let text = Stringtable.Localize("$SLOT_NO_AMMO");
+                        Console.Printf(String.Format(text,Weap.GetTag()));
+                    }
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        return false;
     }
 }
 
@@ -416,8 +446,6 @@ class SlotsToken : Inventory
         let slotweap = slots.GetSlotItem(slot);
         if (slotweap == null)
         {
-            //SlotDebug.LogVerbose("No Weapon in Slot");
-            Console.printf(Stringtable.Localize("$SLOT_EMPTY"));
             enableRelease = false;
         }
         else if (slotweap == currWeapon && slotweap == actualCurrentWeapon)
