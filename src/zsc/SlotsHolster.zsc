@@ -13,14 +13,6 @@ class SlotsHolster : Weapon
         return lastWeapon;
     }
 
-    action void A_ConditionalCrosshair(int num)
-    {
-        if (slots_holster_hide_crosshair)
-		{
-            A_SetCrosshair(num);
-		}
-    }
-
     Default
     {
         +WEAPON.WIMPY_WEAPON
@@ -43,10 +35,10 @@ class SlotsHolster : Weapon
     {
         Ready:
             TNT1 A 1 A_WeaponReady;
-            TNT1 A 1 A_ConditionalCrosshair(5);
+            TNT1 A 1 A_SetCrosshair(slots_holster_crosshair);
             Loop;
         Select:
-            TNT1 A 1 A_ConditionalCrosshair(5);
+            TNT1 A 1 A_SetCrosshair(slots_holster_crosshair);
             TNT1 AAAAAAAAA 1 A_Raise;
             Loop;
         Deselect:

@@ -1,3 +1,12 @@
+OptionValue SimpleSlotsHolsterCrosshairStyle
+{
+    0, "$SLOT_HOLSTER_CROSSHAIR_0"
+    5, "$SLOT_HOLSTER_CROSSHAIR_5"
+    7, "$SLOT_HOLSTER_CROSSHAIR_7"
+    99, "$SLOT_HOLSTER_CROSSHAIR_99"
+}
+
+
 AddOptionMenu "OptionsMenu"
 {
     StaticText ""
@@ -58,6 +67,11 @@ OptionMenu "SimpleSlotOptions"
     Control "$SLOT_KEY_HOLSTER", "slots_holster"
     StaticText "$SLOT_KEY_HOLSTER_DESC"
     StaticText "$SLOT_KEY_HOLSTER_DESC2"
+    StaticText ""
+    Option "$SLOT_HOLSTER_CROSSHAIR", "slots_holster_crosshair", SimpleSlotsHolsterCrosshairStyle
+    StaticText "$SLOT_HOLSTER_CROSSHAIR_DESC"
+    StaticText "$SLOT_HOLSTER_CROSSHAIR_DESC2"
+    StaticText "$SLOT_HOLSTER_CROSSHAIR_DESC3", 1
     StaticText ""
     SubMenu "$SLOT_SLOTS_MENUNAME", "SimpleSlotWeaponSlots", 0, 1
 }
