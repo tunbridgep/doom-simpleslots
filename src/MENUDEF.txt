@@ -9,7 +9,6 @@ OptionValue SimpleSlotsHolsterCrosshairStyle
 
 AddOptionMenu "OptionsMenu"
 {
-    StaticText ""
     Submenu "$SLOT_MENUNAME", "SimpleSlotOptions"
 }
 
@@ -26,7 +25,7 @@ OptionMenu "SimpleSlotWeaponSlots"
     StaticText "$SLOT_SLOTS_MAIN_DESC8"
     StaticText "$SLOT_SLOTS_MAIN_DESC9"
     StaticText "$SLOT_SLOTS_MAIN_DESC10"
-    StaticText "$SLOT_SLOTS_MAIN_DESC11"
+    StaticText "$SLOT_SLOTS_MAIN_DESC11", 1
     StaticText ""
     Control "$SLOT_KEY_SLOT0", "+slots_select_0"
     Control "$SLOT_KEY_SLOT1", "+slots_select_1"
@@ -43,6 +42,9 @@ OptionMenu "SimpleSlotWeaponSlots"
     Option "$SLOT_AUTO_IGNORE_SLOTS", "slots_auto_ignore_in_slots", YesNo
     StaticText "$SLOT_AUTO_IGNORE_SLOTS_DESC"
     StaticText "$SLOT_AUTO_IGNORE_SLOTS_DESC2"
+    StaticText ""
+    Option "$SLOT_AMMO_CHECK", "slots_check_ammo", YesNo
+    StaticText "$SLOT_AMMO_CHECK_DESC"
 
 }
 

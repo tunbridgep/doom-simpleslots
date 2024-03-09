@@ -60,3 +60,5 @@ SLOT_HOLSTER_CROSSHAIR_0 = "No Change";
 SLOT_HOLSTER_CROSSHAIR_5 = "Angle";
 SLOT_HOLSTER_CROSSHAIR_7 = "Dot";
 SLOT_HOLSTER_CROSSHAIR_99 = "Hidden";
+SLOT_AMMO_CHECK = "Check Ammo";
+SLOT_AMMO_CHECK_DESC = "When selecting a slot, only choose weapons that have ammo.";
