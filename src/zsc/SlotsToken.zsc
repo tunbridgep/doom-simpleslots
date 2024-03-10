@@ -366,7 +366,7 @@ class SlotsToken : Inventory
     private bool IsBadWeapon(Weapon weap)
     {
         let nm = weap.GetClassName();
-        return nm == "SlotsHolster" || nm == "MotoHandles" || nm == "Holster" || nm == "Holsterweapon";
+        return nm == "SlotsHolster" || nm == "MotoHandles" || nm == "Holster" || nm == "Holsterweapon" || nm == "Lucyhandles";
     }
 
     private void RememberWeapons()

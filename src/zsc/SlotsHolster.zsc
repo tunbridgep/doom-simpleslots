@@ -47,7 +47,11 @@ class SlotsHolster : Weapon
             Loop;
         Fire:
         AltFire:
-            TNT1 A 1 A_SelectWeapon(invoker.lastWeapon.GetClassName());
+            TNT1 A 1
+            {
+                if (invoker.lastWeapon)
+                    A_SelectWeapon(invoker.lastWeapon.GetClassName());
+            }
             Goto Ready;
     }
 }
