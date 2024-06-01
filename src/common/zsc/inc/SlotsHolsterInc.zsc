@@ -15,12 +15,25 @@ mixin class SlotsHolsterInc
         return lastWeapon;
     }
 
-    action void A_Unholster()
+    private action void A_Select()
+    {
+        A_SetCrosshair(-1);
+        A_Raise(999);
+    }
+    
+    private action void A_Deselect()
+    {
+        invoker.OnUnholster();
+        A_Lower(999);
+        A_SetCrosshair(0);
+    }
+
+    private action void A_Unholster()
     {
         if (invoker.lastWeapon)
             A_SelectWeapon(invoker.lastWeapon.GetClassName());
     }
-
+    
     Default
     {
         +INVENTORY.UNDROPPABLE
@@ -38,13 +51,12 @@ mixin class SlotsHolsterInc
             TNT1 A 1 A_SetCrosshair(-1);
             Loop;
         Select:
-            TNT1 A 1 A_SetCrosshair(-1);
-            TNT1 AAAAAAAAA 1 A_Raise;
+            TNT1 A 1 A_Select;
             Loop;
         Deselect:
-            TNT1 AAAAAAAAA 1 A_Lower;
-            TNT1 A 1 A_SetCrosshair(0);
+            TNT1 A 1 A_Deselect;
             Loop;
+        Unholster:
         Fire:
         AltFire:
             TNT1 A 1 A_Unholster;

@@ -2,7 +2,7 @@
 class SlotsHolster : SelacoWeapon
 {
     mixin SlotsHolsterInc;
-
+    
     Default
     {
         +WeaponBase.WIMPY_WEAPON
@@ -17,5 +17,18 @@ class SlotsHolster : SelacoWeapon
         SelacoWeapon.HideAmmo true;
         SelacoWeapon.Upgradeable false;
         SelacoWeapon.interactionSprite "DMRB";
+    }
+
+    void OnUnholster()
+    {
+        //Cancel all pending Selaco animations
+        owner.A_TakeInventory("Showpass", 1);
+        owner.A_TakeInventory("ScanLightPanelPressed", 1);
+        owner.A_TakeInventory("PushButtonNow", 1);
+        owner.A_TakeInventory("ShowHands", 1);
+        owner.A_TakeInventory("ShowHands2", 1);
+        owner.A_TakeInventory("ShowHandsFast", 1);
+        owner.A_TakeInventory("ShieldEyes", 1);
+        owner.A_GiveInventory("CancelAnimation", 1);
     }
 }

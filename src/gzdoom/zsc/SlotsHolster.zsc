@@ -15,4 +15,9 @@ class SlotsHolster : Weapon
         +Weapon.AMMO_OPTIONAL
         +Weapon.NOAUTOSWITCHTO
     }
+    
+    void OnUnholster()
+    {
+    }
+
 }
