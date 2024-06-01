@@ -8,8 +8,9 @@ AddOptionMenu "ModOptionsMenu"
     Slider "$SLOT_DELAY", "slots_delay", 0,5,0.1,1
     space 20 
     StaticText "$SLOT_BINDINGS_MAIN_HEADER", "OMNIBLUE"
-    Control "$SLOT_KEY_HOLSTER", "slots_holster"
+    Control "$SLOT_KEY_LASTWEAPON", "slots_lastweapon"
     Control "$SLOT_KEY_CONFIG", "+slots_config"
+    Control "$SLOT_KEY_HOLSTER", "slots_holster"
     space 20 
     StaticText "$SLOT_BINDINGS_SLOTS_HEADER", "OMNIBLUE"
     Control "$SLOT_KEY_SLOT0", "+slots_select_0"

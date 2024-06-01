@@ -1,60 +1,21 @@
 //A dummy weapon used to "holster" our current weapon
 class SlotsHolster : SelacoWeapon
 {
-    WeaponBase lastWeapon;
-
-    void SetLastWeapon(WeaponBase weapon)
-    {
-        lastWeapon = weapon;
-    }
-
-    WeaponBase GetLastWeapon()
-    {
-        return lastWeapon;
-    }
+    mixin SlotsHolsterInc;
 
     Default
     {
-        +WEAPONBASE.WIMPY_WEAPON
-        +WEAPONBASE.NOALERT
-        +WEAPONBASE.NOAUTOFIRE
-        +WEAPONBASE.NO_AUTO_SWITCH
-        +WEAPONBASE.CHEATNOTWEAPON
-        +WEAPONBASE.NODEATHINPUT
-        +WEAPONBASE.NODEATHDESELECT
-        +WEAPONBASE.AMMO_OPTIONAL
-        +WEAPONBASE.NOAUTOSWITCHTO
-        +INVENTORY.UNDROPPABLE
-        +INVENTORY.ALWAYSPICKUP
-        +INVENTORY.HUBPOWER
-        +INVENTORY.PERSISTENTPOWER
-        +INVENTORY.UNTOSSABLE
-        +INVENTORY.IGNORESKILL
+        +WeaponBase.WIMPY_WEAPON
+        +WeaponBase.NOALERT
+        +WeaponBase.NOAUTOFIRE
+        +WeaponBase.NO_AUTO_SWITCH
+        +WeaponBase.CHEATNOTWEAPON
+        +WeaponBase.NODEATHINPUT
+        +WeaponBase.NODEATHDESELECT
+        +WeaponBase.AMMO_OPTIONAL
+        +WeaponBase.NOAUTOSWITCHTO
         SelacoWeapon.HideAmmo true;
         SelacoWeapon.Upgradeable false;
-        Tag "Weapon Holstered";
-    }
-    States
-    {
-        Ready:
-            TNT1 A 1 A_WeaponReady;
-            TNT1 A 1 A_SetCrosshair(-1);
-            Loop;
-        Select:
-            TNT1 A 1 A_SetCrosshair(-1);
-            TNT1 AAAAAAAAA 1 A_Raise;
-            Loop;
-        Deselect:
-            TNT1 AAAAAAAAA 1 A_Lower;
-            TNT1 A 1 A_SetCrosshair(0);
-            Loop;
-        Fire:
-        AltFire:
-            TNT1 A 1
-            {
-                if (invoker.lastWeapon)
-                    A_SelectWeapon(invoker.lastWeapon.GetClassName());
-            }
-            Goto Ready;
+        SelacoWeapon.interactionSprite "DMRB";
     }
 }

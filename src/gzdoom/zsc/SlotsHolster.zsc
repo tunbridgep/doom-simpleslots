@@ -1,57 +1,18 @@
 //A dummy weapon used to "holster" our current weapon
 class SlotsHolster : Weapon
 {
-    Weapon lastWeapon;
-
-    void SetLastWeapon(Weapon weapon)
-    {
-        lastWeapon = weapon;
-    }
-
-    Weapon GetLastWeapon()
-    {
-        return lastWeapon;
-    }
+    mixin SlotsHolsterInc;
 
     Default
     {
-        +WEAPON.WIMPY_WEAPON
-        +WEAPON.NOALERT
-        +WEAPON.NOAUTOFIRE
-        +WEAPON.NO_AUTO_SWITCH
-        +WEAPON.CHEATNOTWEAPON
-        +WEAPON.NODEATHINPUT
-        +WEAPON.NODEATHDESELECT
-        +WEAPON.AMMO_OPTIONAL
-        +WEAPON.NOAUTOSWITCHTO
-        +INVENTORY.UNDROPPABLE
-        +INVENTORY.ALWAYSPICKUP
-        +INVENTORY.HUBPOWER
-        +INVENTORY.PERSISTENTPOWER
-        +INVENTORY.UNTOSSABLE
-        +INVENTORY.IGNORESKILL
-    }
-    States
-    {
-        Ready:
-            TNT1 A 1 A_WeaponReady;
-            TNT1 A 1 A_SetCrosshair(-1);
-            Loop;
-        Select:
-            TNT1 A 1 A_SetCrosshair(-1);
-            TNT1 AAAAAAAAA 1 A_Raise;
-            Loop;
-        Deselect:
-            TNT1 AAAAAAAAA 1 A_Lower;
-            TNT1 A 1 A_SetCrosshair(0);
-            Loop;
-        Fire:
-        AltFire:
-            TNT1 A 1
-            {
-                if (invoker.lastWeapon)
-                    A_SelectWeapon(invoker.lastWeapon.GetClassName());
-            }
-            Goto Ready;
+        +Weapon.WIMPY_WEAPON
+        +Weapon.NOALERT
+        +Weapon.NOAUTOFIRE
+        +Weapon.NO_AUTO_SWITCH
+        +Weapon.CHEATNOTWEAPON
+        +Weapon.NODEATHINPUT
+        +Weapon.NODEATHDESELECT
+        +Weapon.AMMO_OPTIONAL
+        +Weapon.NOAUTOSWITCHTO
     }
 }

@@ -104,13 +104,13 @@ struct IgnoreList
     }
 
 
-    bool IsIgnored(WeaponBase item)
+    bool IsIgnored(Inventory item)
     {
         let nm = item.GetClassName();
         return ignores.Find(nm) != ignores.Size();
     }
 
-    void UpdateIgnore(WeaponBase item)
+    void UpdateIgnore(Inventory item)
     {
         let nm = item.GetClassName();
         let position = ignores.Find(nm);
@@ -155,7 +155,7 @@ struct SlotManager
         SlotDebug.LogVerbose("Writing Slot List (Slot "..slot..")");
     }
 
-    void UpdateSlotItem(int slot, WeaponBase wpn)
+    void UpdateSlotItem(int slot, Inventory wpn)
     {
         String item = wpn.GetClassName();
 
@@ -180,9 +180,9 @@ struct SlotManager
         WriteSlot(slot);
     }
 
-    WeaponBase GetSlotItem(int slot)
+    Inventory GetSlotItem(int slot)
     {
-        WeaponBase re = null;
+        Inventory re = null;
         let size = slots[slot].Size();
         if (size > 0)
         {
@@ -191,7 +191,7 @@ struct SlotManager
                 let item = slots[slot].GetAt(i);
                 if (ValidWeapon(item))
                 {
-                    let wp = WeaponBase(owner.FindInventory(item));
+                    let wp = Inventory(owner.FindInventory(item));
                     if (wp)
                         re = wp;
                 }
@@ -206,7 +206,7 @@ struct SlotManager
         return re;
     }
 
-    bool AnySlotContains(WeaponBase wpn)
+    bool AnySlotContains(Inventory wpn)
     {
         let nm = wpn.GetClassName();
         for (int i = 0; i < NUM_SLOTS; i++)
@@ -220,19 +220,13 @@ struct SlotManager
     private bool ValidWeapon(String weapon, bool ammoMessage = true)
     {
         let p = players[consoleplayer].mo;
-        let Weap = WeaponBase(p.FindInventory(weapon));
+        let Weap = Inventory(p.FindInventory(weapon));
 
         if (Weap)
         {
             if (slots_check_ammo)
             {
-                Ammo ammo1 = Ammo(p.FindInventory(Weap.AmmoType1));
-                Ammo ammo2 = Ammo(p.FindInventory(Weap.AmmoType2));
-
-                bool hasAmmo1 = !ammo1 || Weap.bAMMO_OPTIONAL || ammo1.Amount >= Weap.AmmoUse1;
-                bool hasAmmo2 = !ammo2 || Weap.bALT_AMMO_OPTIONAL || ammo2.Amount >= Weap.AmmoUse2;
-
-                if (!hasAmmo1 && !hasAmmo2)
+                if (!WeaponUtils.HasAmmo(Weap))
                 {
                     if (ammoMessage)
                     {
@@ -266,11 +260,11 @@ class SlotsToken : Inventory
         Inventory.MaxAmount 1;
     }
 
-    WeaponBase actualCurrentWeapon; //our ACTUAL currently selected weapon, used to know when we change weapon
-    WeaponBase lastWeapon; //The previous weapon we selected which was not ignored
-    WeaponBase currWeapon; //The latest weapon we selected which was not ignored
-    WeaponBase ignored; //The currently ignored weapon. This is temporary and not added to the ignore list
-    WeaponBase goodWeapon; //The currently selected weapon if it's valid for being a lastWeapon but hasn't been set yet.
+    Inventory actualCurrentWeapon; //our ACTUAL currently selected weapon, used to know when we change weapon
+    Inventory lastWeapon; //The previous weapon we selected which was not ignored
+    Inventory currWeapon; //The latest weapon we selected which was not ignored
+    Inventory ignored; //The currently ignored weapon. This is temporary and not added to the ignore list
+    Inventory goodWeapon; //The currently selected weapon if it's valid for being a lastWeapon but hasn't been set yet.
     SlotManager slots;
     IgnoreList ignores;
     bool enableRelease; //Can we release a slot button
@@ -312,14 +306,14 @@ class SlotsToken : Inventory
     //that it can, on whatever slot, to set as our default lastweapon
     private void SetStartingLastWeapon()
     {
-        WeaponBase findLast;
-        WeaponBase weap = owner.Player.PendingWeapon;
+        Inventory findLast;
+        Inventory weap = owner.Player.PendingWeapon;
         for (int i = 0; i < 4;i++)
         {
             SlotDebug.LogVerbose("Checking Slot: "..i);
             for (int j = 0;j < owner.Player.weapons.SlotSize(i);j++)
             {
-                let slotweap = WeaponBase(owner.FindInventory(owner.player.weapons.GetWeapon(i,j)));
+                let slotweap = Inventory(owner.FindInventory(owner.player.weapons.GetWeapon(i,j)));
                 if (slotweap)
                 {
                     SlotDebug.LogVerbose("Checking Slot Weapon: "..slotweap.GetClassName());
@@ -333,7 +327,7 @@ class SlotsToken : Inventory
     }
     */
 
-    private WeaponBase GetWeapon()
+    private Inventory GetWeapon()
     {
         let weap = owner.Player.ReadyWeapon;
 
@@ -347,7 +341,7 @@ class SlotsToken : Inventory
         return null;
     }
 
-    private void SwitchWeapon(WeaponBase newWeapon)
+    private void SwitchWeapon(Inventory newWeapon)
     {
         let wp = newWeapon.GetClassName();
         enableRelease = false;
@@ -363,10 +357,10 @@ class SlotsToken : Inventory
     }
 
     //Known bad weapons that should NEVER be allowed into any slot or last weapon selection for any reason
-    private bool IsBadWeapon(WeaponBase weap)
+    private bool IsBadWeapon(Inventory weap)
     {
         let nm = weap.GetClassName();
-        return nm == "SlotsHolster" || nm == "MotoHandles" || nm == "Holster" || nm == "Holsterweapon" || nm == "Lucyhandles";
+        return nm == "SlotsHolster" || nm == "MotoHandles" || nm == "Holster" || nm == "Holsterweapon" || nm == "Lucyhandles" || nm == "Fire_Extinguisher";
     }
 
     private void RememberWeapons()

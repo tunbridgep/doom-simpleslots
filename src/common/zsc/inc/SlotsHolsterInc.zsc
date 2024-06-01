@@ -1,0 +1,53 @@
+//We need to use Inventory for everything
+//because Selaco doesn't use Weapon as it's base class
+//for some insane and ridiculous reason.
+mixin class SlotsHolsterInc
+{
+    Inventory lastWeapon;
+
+    void SetLastWeapon(Inventory weapon)
+    {
+        lastWeapon = weapon;
+    }
+
+    Inventory GetLastWeapon()
+    {
+        return lastWeapon;
+    }
+
+    action void A_Unholster()
+    {
+        if (invoker.lastWeapon)
+            A_SelectWeapon(invoker.lastWeapon.GetClassName());
+    }
+
+    Default
+    {
+        +INVENTORY.UNDROPPABLE
+        +INVENTORY.ALWAYSPICKUP
+        +INVENTORY.HUBPOWER
+        +INVENTORY.PERSISTENTPOWER
+        +INVENTORY.UNTOSSABLE
+        +INVENTORY.IGNORESKILL
+        Tag "Weapon Holstered";
+    }
+    States
+    {
+        Ready:
+            TNT1 A 1 A_WeaponReady;
+            TNT1 A 1 A_SetCrosshair(-1);
+            Loop;
+        Select:
+            TNT1 A 1 A_SetCrosshair(-1);
+            TNT1 AAAAAAAAA 1 A_Raise;
+            Loop;
+        Deselect:
+            TNT1 AAAAAAAAA 1 A_Lower;
+            TNT1 A 1 A_SetCrosshair(0);
+            Loop;
+        Fire:
+        AltFire:
+            TNT1 A 1 A_Unholster;
+            Goto Ready;
+    }
+}

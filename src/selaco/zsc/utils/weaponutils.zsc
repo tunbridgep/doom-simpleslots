@@ -1,0 +1,21 @@
+//Have to do this here because it's different for GZDoom and Selaco
+class WeaponUtils
+{
+    static bool HasAmmo(Inventory weapon)
+    {
+        let p = players[consoleplayer].mo;
+        let Weap = WeaponBase(p.FindInventory(weapon.GetClassName()));
+
+        if (Weap != Null)
+        {
+            Ammo ammo1 = Ammo(p.FindInventory(Weap.AmmoType1));
+            Ammo ammo2 = Ammo(p.FindInventory(Weap.AmmoType2));
+
+            bool hasAmmo1 = !ammo1 || Weap.bAMMO_OPTIONAL || ammo1.Amount >= Weap.AmmoUse1;
+            bool hasAmmo2 = !ammo2 || Weap.bALT_AMMO_OPTIONAL || ammo2.Amount >= Weap.AmmoUse2;
+
+            return hasAmmo1 || hasAmmo2;
+        }
+        return false;
+    }
+}
