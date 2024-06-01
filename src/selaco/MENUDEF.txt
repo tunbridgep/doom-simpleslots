@@ -1,0 +1,26 @@
+AddOptionMenu "ModOptionsMenu"
+{
+    ModHeader "Simple Slots", "Sarge945", "$SLOT_MOD_DESC", "" 
+    StaticText "$SLOT_OPTIONS_HEADER", "OMNIBLUE"
+    TooltipOption "$SLOT_AUTO_IGNORE_SLOTS", "$SLOT_AUTO_IGNORE_SLOTS_DESC", "", "slots_auto_ignore_in_slots", YesNo
+    TooltipOption "$SLOT_AMMO_CHECK", "$SLOT_AMMO_CHECK_DESC", "", "slots_check_ammo", YesNo
+    SubText	"$SLOT_DELAY_DESC", "WHITE", "PDA13FONT"
+    Slider "$SLOT_DELAY", "slots_delay", 0,5,0.1,1
+    space 20 
+    StaticText "$SLOT_BINDINGS_MAIN_HEADER", "OMNIBLUE"
+    Control "$SLOT_KEY_HOLSTER", "slots_holster"
+    Control "$SLOT_KEY_CONFIG", "+slots_config"
+    space 20 
+    StaticText "$SLOT_BINDINGS_SLOTS_HEADER", "OMNIBLUE"
+    Control "$SLOT_KEY_SLOT0", "+slots_select_0"
+    Control "$SLOT_KEY_SLOT1", "+slots_select_1"
+    Control "$SLOT_KEY_SLOT2", "+slots_select_2"
+    Control "$SLOT_KEY_SLOT3", "+slots_select_3"
+    Control "$SLOT_KEY_SLOT4", "+slots_select_4"
+    Control "$SLOT_KEY_SLOT4", "+slots_select_4"
+    Control "$SLOT_KEY_SLOT5", "+slots_select_5"
+    Control "$SLOT_KEY_SLOT6", "+slots_select_6"
+    Control "$SLOT_KEY_SLOT7", "+slots_select_7"
+    Control "$SLOT_KEY_SLOT8", "+slots_select_8"
+    Control "$SLOT_KEY_SLOT9", "+slots_select_9"
+}

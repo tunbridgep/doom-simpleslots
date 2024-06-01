@@ -1,0 +1,7 @@
+//Selaco Mod Information
+SLOT_MOD_DESC = "This mod provides a Last Weapon Used feature, which will automatically select the previously equipped weapon. By holding the Configuration key and pressing the Last Weapon Used key, the current weapon will be ignored. While a weapon is ignored, it will always be skipped when selecting your Last Weapon. Additionally, this mod provides 10 assignable weapon slots. Weapon slots allow quick-switching to various weapons and switching back quickly, and weapons selected via weapon slots are ignored by the Last Weapon Used feature. Holding a slot button will select the weapon assigned to the slot, and releasing the button will switch back to the previously used weapon. Alternatively, pressing the slot button will switch to the weapon in the slot, and pressing it again will switch back to the previously used weapon. To assign the current weapon to a slot, hold the Configuration key and press the slot button. Slots can hold multiple weapons, with the last assigned weapon being prioritised.";
+SLOT_OPTIONS_HEADER = "Main Options";
+SLOT_BINDINGS_MAIN_HEADER = "Main Controls";
+SLOT_BINDINGS_SLOTS_HEADER = "Weapon Slots";
+SLOT_AUTO_IGNORE_SLOTS_DESC = "Weapons assigned to any slot will be treated as if they were ignored, and will never become your last used weapon even if selected manually or via autoswitch.";
+SLOT_DELAY_DESC = "How long a weapon must be selected for in order to be considered as a last used weapon.";

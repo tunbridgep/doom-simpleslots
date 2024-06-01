@@ -1,44 +1,47 @@
 //A dummy weapon used to "holster" our current weapon
-class SlotsHolster : Weapon
+class SlotsHolster : SelacoWeapon
 {
-    Weapon lastWeapon;
+    WeaponBase lastWeapon;
 
-    void SetLastWeapon(Weapon weapon)
+    void SetLastWeapon(WeaponBase weapon)
     {
         lastWeapon = weapon;
     }
 
-    Weapon GetLastWeapon()
+    WeaponBase GetLastWeapon()
     {
         return lastWeapon;
     }
 
     Default
     {
-        +WEAPON.WIMPY_WEAPON
-        +WEAPON.NOALERT
-        +WEAPON.NOAUTOFIRE
-        +WEAPON.NO_AUTO_SWITCH
-        +WEAPON.CHEATNOTWEAPON
-        +WEAPON.NODEATHINPUT
-        +WEAPON.NODEATHDESELECT
-        +WEAPON.AMMO_OPTIONAL
-        +WEAPON.NOAUTOSWITCHTO
+        +WEAPONBASE.WIMPY_WEAPON
+        +WEAPONBASE.NOALERT
+        +WEAPONBASE.NOAUTOFIRE
+        +WEAPONBASE.NO_AUTO_SWITCH
+        +WEAPONBASE.CHEATNOTWEAPON
+        +WEAPONBASE.NODEATHINPUT
+        +WEAPONBASE.NODEATHDESELECT
+        +WEAPONBASE.AMMO_OPTIONAL
+        +WEAPONBASE.NOAUTOSWITCHTO
         +INVENTORY.UNDROPPABLE
         +INVENTORY.ALWAYSPICKUP
         +INVENTORY.HUBPOWER
         +INVENTORY.PERSISTENTPOWER
         +INVENTORY.UNTOSSABLE
         +INVENTORY.IGNORESKILL
+        SelacoWeapon.HideAmmo true;
+        SelacoWeapon.Upgradeable false;
+        Tag "Weapon Holstered";
     }
     States
     {
         Ready:
             TNT1 A 1 A_WeaponReady;
-            TNT1 A 1 A_SetCrosshair(slots_holster_crosshair);
+            TNT1 A 1 A_SetCrosshair(-1);
             Loop;
         Select:
-            TNT1 A 1 A_SetCrosshair(slots_holster_crosshair);
+            TNT1 A 1 A_SetCrosshair(-1);
             TNT1 AAAAAAAAA 1 A_Raise;
             Loop;
         Deselect:
