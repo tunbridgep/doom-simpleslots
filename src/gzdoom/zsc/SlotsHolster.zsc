@@ -3,12 +3,6 @@ class SlotsHolster : Weapon
 {
     mixin SlotsHolsterInc;
     
-    //No special processing for GZDoom
-    private void UpdateCrosshair(int crosshair)
-    {
-        A_SetCrosshair(crosshair);
-    }
-
     Default
     {
         +Weapon.WIMPY_WEAPON

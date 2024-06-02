@@ -4,10 +4,10 @@ class SlotsHolster : SelacoWeapon
     mixin SlotsHolsterInc;
 
     //Selaco uses special custom crosshairs
-    private void UpdateCrosshair(int crosshair)
+    private action void A_SetCrosshair(int crosshair)
     {
         if (crosshair > 0)
-            setPlainCrosshair("HOLCRS"..crosshair);
+            invoker.setPlainCrosshair("HOLCRS"..crosshair);
     }
     
     Default
