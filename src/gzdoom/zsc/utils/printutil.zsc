@@ -1,0 +1,9 @@
+//Zdoom displays Console.printf messages,
+//So this just passes it along
+class PrintUtil
+{
+    static void PrintScreenMessage(string message)
+    {
+        Console.Printf(message);
+    }
+}

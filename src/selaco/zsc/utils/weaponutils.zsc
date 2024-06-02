@@ -11,8 +11,10 @@ class WeaponUtils
             Ammo ammo1 = Ammo(p.FindInventory(Weap.AmmoType1));
             Ammo ammo2 = Ammo(p.FindInventory(Weap.AmmoType2));
 
-            bool hasAmmo1 = !ammo1 || Weap.bAMMO_OPTIONAL || ammo1.Amount >= Weap.AmmoUse1;
-            bool hasAmmo2 = !ammo2 || Weap.bALT_AMMO_OPTIONAL || ammo2.Amount >= Weap.AmmoUse2;
+            //Can't use ammoUse and ammoUse2 properties because every weapon uses 0 ammo
+            //and then checks manually in decorate
+            bool hasAmmo1 = !ammo1 || Weap.bAMMO_OPTIONAL || ammo1.Amount >= 1;
+            bool hasAmmo2 = !ammo2 || Weap.bALT_AMMO_OPTIONAL || ammo2.Amount >= 1;
 
             return hasAmmo1 || hasAmmo2;
         }

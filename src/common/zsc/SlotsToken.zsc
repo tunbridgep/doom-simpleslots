@@ -128,7 +128,8 @@ struct IgnoreList
             ignores.Delete(position);
         }
         Write();
-        Console.Printf(text,item.GetTag());
+        let message = String.Format(text,item.GetTag());
+        PrintUtil.PrintScreenMessage(message);
     }
 }
 
@@ -158,25 +159,28 @@ struct SlotManager
     void UpdateSlotItem(int slot, Inventory wpn)
     {
         String item = wpn.GetClassName();
+        String message = "";
 
         let position = slots[slot].Find(item);
 
         if (position == slots[slot].Size()) //If it's not in slot, push it
         {
             slots[slot].Push(item);
-            Console.printf(Stringtable.Localize("$SLOT_ADDED"),wpn.GetTag(),slot+1);
+            message = String.Format(Stringtable.Localize("$SLOT_ADDED"),wpn.GetTag(),slot+1);
         }
         else if (position < slots[slot].Size() - 1) //It's low priority, bump it to the top
         {
             slots[slot].Delete(position);
             slots[slot].Push(item);
-            Console.printf(Stringtable.Localize("$SLOT_UPDATED"),wpn.GetTag(),slot+1);
+            message = String.Format(Stringtable.Localize("$SLOT_UPDATED"),wpn.GetTag(),slot+1);
         }
         else //it's highest priority, remove it
         {
             slots[slot].Pop();
-            Console.printf(Stringtable.Localize("$SLOT_REMOVED"),wpn.GetTag(),slot+1);
+            message = String.Format(Stringtable.Localize("$SLOT_REMOVED"),wpn.GetTag(),slot+1);
         }
+        if (message != "")
+            PrintUtil.PrintScreenMessage(message);
         WriteSlot(slot);
     }
 
@@ -200,7 +204,7 @@ struct SlotManager
         else
         {
             //SlotDebug.LogVerbose("No Weapon in Slot");
-            Console.Printf(Stringtable.Localize("$SLOT_EMPTY"));
+            PrintUtil.PrintScreenMessage(Stringtable.Localize("$SLOT_EMPTY"));
         }
         
         return re;
@@ -231,7 +235,8 @@ struct SlotManager
                     if (ammoMessage)
                     {
                         let text = Stringtable.Localize("$SLOT_NO_AMMO");
-                        Console.Printf(String.Format(text,Weap.GetTag()));
+                        let message = String.Format(text,Weap.GetTag());
+                        PrintUtil.PrintScreenMessage(message);
                     }
                     return false;
                 }
@@ -444,7 +449,7 @@ class SlotsToken : Inventory
         }
         else if (slotweap == currWeapon && slotweap == actualCurrentWeapon)
         {
-            Console.printf(Stringtable.Localize("$SLOT_ALREADY_SELECTED"));
+            PrintUtil.PrintScreenMessage(Stringtable.Localize("$SLOT_ALREADY_SELECTED"));
             enableRelease = false;
         }
         else if (slotweap != weap)

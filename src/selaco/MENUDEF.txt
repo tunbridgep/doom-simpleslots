@@ -1,6 +1,6 @@
 AddOptionMenu "ModOptionsMenu"
 {
-    ModHeader "Simple Slots", "Sarge945", "$SLOT_MOD_DESC", "" 
+    ModHeader "Simple Slots", "Sarge945", "$SLOT_MOD_DESC", "SSBANNER" 
     StaticText "$SLOT_OPTIONS_HEADER", "OMNIBLUE"
     TooltipOption "$SLOT_AUTO_IGNORE_SLOTS", "$SLOT_AUTO_IGNORE_SLOTS_DESC", "", "slots_auto_ignore_in_slots", YesNo
     TooltipOption "$SLOT_AMMO_CHECK", "$SLOT_AMMO_CHECK_DESC", "", "slots_check_ammo", YesNo

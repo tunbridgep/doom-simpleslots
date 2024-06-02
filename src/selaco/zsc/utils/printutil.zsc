@@ -1,0 +1,10 @@
+//Selaco doesn't display Console.printf messages,
+//so we're gonna have to write a util function
+//to print to the center of the screen
+class PrintUtil
+{
+    static void PrintScreenMessage(string message)
+    {
+        Console.MidPrint("PDA13FONT",message);
+    }
+}
