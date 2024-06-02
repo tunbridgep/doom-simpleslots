@@ -17,7 +17,7 @@ mixin class SlotsHolsterInc
 
     private action void A_Select()
     {
-        A_SetCrosshair(-1);
+        invoker.UpdateCrosshair(slots_holster_crosshair);
         A_Raise(999);
     }
     
@@ -25,7 +25,7 @@ mixin class SlotsHolsterInc
     {
         invoker.OnUnholster();
         A_Lower(999);
-        A_SetCrosshair(0);
+        invoker.UpdateCrosshair(0);
     }
 
     private action void A_Unholster()

@@ -2,6 +2,13 @@
 class SlotsHolster : SelacoWeapon
 {
     mixin SlotsHolsterInc;
+
+    //Selaco uses special custom crosshairs
+    private void UpdateCrosshair(int crosshair)
+    {
+        if (crosshair > 0)
+            setPlainCrosshair("HOLCRS"..crosshair);
+    }
     
     Default
     {
