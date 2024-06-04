@@ -5,6 +5,6 @@ class PrintUtil
 {
     static void PrintScreenMessage(string message)
     {
-        Console.MidPrint("PDA13FONT",message);
+        Console.MidPrint("SMALLFONT","\c[white]"..message,true);
     }
 }

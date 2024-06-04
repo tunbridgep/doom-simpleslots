@@ -3,5 +3,9 @@ SLOT_MOD_DESC = "This mod provides a Last Weapon Used feature, which will automa
 SLOT_OPTIONS_HEADER = "Main Options";
 SLOT_BINDINGS_MAIN_HEADER = "Main Controls";
 SLOT_BINDINGS_SLOTS_HEADER = "Weapon Slots";
-SLOT_AUTO_IGNORE_SLOTS_DESC = "Weapons assigned to any slot will be treated as if they were ignored, and will never become your last used weapon even if selected manually or via autoswitch.";
-SLOT_DELAY_DESC = "How long a weapon must be selected for in order to be considered as a last used weapon.";
+
+//Options
+SLOT_AUTO_IGNORE_SLOTS_DESC = "Weapons assigned to any slot will be treated as if they were ignored, and will never become your last used weapon even if selected manually or via autoswitch.\n\n\c[omniblue](Default: No)";
+SLOT_DELAY_DESC = "How long a weapon must be selected for in order to be considered as a last used weapon.\n\n\c[omniblue](Default: 1.0)";
+SLOT_AMMO_CHECK_DESC = "When selecting a slot, only choose weapons that have ammo.\n\n\c[omniblue](Default: Yes)";
+SLOT_HOLSTER_CROSSHAIR_DESC = "When holstering a weapon, select a custom crosshair to use.\n\n\c[omniblue](Default: Hidden)";
