@@ -62,3 +62,6 @@ SLOT_HOLSTER_CROSSHAIR_7 = "Dot";
 SLOT_HOLSTER_CROSSHAIR_HIDDEN = "Hidden";
 SLOT_AMMO_CHECK = "Check Ammo";
 SLOT_AMMO_CHECK_DESC = "When selecting a slot, only choose weapons that have ammo.";
+SLOT_HOLSTER_ON_USE = "Hold USE to Holster";
+SLOT_HOLSTER_ON_USE_DESC = "Holster be pressing your Use key.";
+SLOT_HOLSTER_ON_USE_DESC2 = "Allows holstering without using a separate key.";

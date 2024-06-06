@@ -1,6 +1,10 @@
 //Handles giving token on startup, and deals with keypresses
 class SimpleSlotsHandler : SlotsBaseHandler
 {
+
+    int held_use_tics; //How long have we held the use key for
+    bool doConfig; //Set when the config key is held
+
     private void SetupTokens(Actor Player)
     {
         let item = SlotsToken(Player.FindInventory("SlotsToken"));
@@ -20,8 +24,6 @@ class SimpleSlotsHandler : SlotsBaseHandler
     {
         SetupTokens(Player);
     }
-    
-    bool doConfig;
 
     private void DoSlot(SlotsToken token, int slot)
     {
@@ -80,6 +82,23 @@ class SimpleSlotsHandler : SlotsBaseHandler
         else if (e.Name == "SlotsHolster")
         {
             token.DoHolster();
+        }
+    }
+
+    override void WorldTick()
+    {
+        if (players[consoleplayer].cmd.buttons & BT_USE)
+        {
+            if (held_use_tics > -1)
+                held_use_tics++;
+        }
+        else
+            held_use_tics = 0;
+
+        if (held_use_tics > slots_holster_on_use_tics && !held_use_tics > -1) //We need to hold it for 1 second
+        {
+            EventHandler.SendNetworkEvent("SlotsHolster");
+            held_use_tics = -1;
         }
     }
 }

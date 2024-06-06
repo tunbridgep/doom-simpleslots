@@ -9,3 +9,4 @@ SLOT_AUTO_IGNORE_SLOTS_DESC = "Weapons assigned to any slot will be treated as i
 SLOT_DELAY_DESC = "How long a weapon must be selected for in order to be considered as a last used weapon.\n\n\c[omniblue](Default: 1.0)";
 SLOT_AMMO_CHECK_DESC = "When selecting a slot, only choose weapons that have ammo.\n\n\c[omniblue](Default: Yes)";
 SLOT_HOLSTER_CROSSHAIR_DESC = "When holstering a weapon, select a custom crosshair to use.\n\n\c[omniblue](Default: Hidden)";
+SLOT_HOLSTER_ON_USE_DESC = "Holster be pressing your \c[omniblue]Use\c[white] key.\n\nAllows holstering without using a separate key.\n\n\c[omniblue](Default: No)";
