@@ -1,5 +1,5 @@
 //A dummy weapon used to "holster" our current weapon
-class SlotsHolster : SelacoWeapon
+class SlotsHolster : Fists
 {
     mixin SlotsHolsterInc;
 
@@ -8,6 +8,8 @@ class SlotsHolster : SelacoWeapon
     {
         if (crosshair > 0)
             invoker.setPlainCrosshair("HOLCRS"..crosshair);
+        else
+            invoker.setPlainCrosshair("TNT1A0");
     }
     
     Default
@@ -23,19 +25,49 @@ class SlotsHolster : SelacoWeapon
         +WeaponBase.NOAUTOSWITCHTO
         SelacoWeapon.HideAmmo true;
         SelacoWeapon.Upgradeable false;
-        SelacoWeapon.interactionSprite "DMRB";
+        SelacoWeapon.interactionSprite "KFIH";
+        SelacoWeapon.SlidingSprite "TNT1";
+        WeaponBase.SlotNumber -1;
+        Inventory.Icon "";
     }
 
     void OnUnholster()
     {
-        //Cancel all pending Selaco animations
-        owner.A_TakeInventory("Showpass", 1);
-        owner.A_TakeInventory("ScanLightPanelPressed", 1);
-        owner.A_TakeInventory("PushButtonNow", 1);
-        owner.A_TakeInventory("ShowHands", 1);
-        owner.A_TakeInventory("ShowHands2", 1);
-        owner.A_TakeInventory("ShowHandsFast", 1);
-        owner.A_TakeInventory("ShieldEyes", 1);
-        owner.A_GiveInventory("CancelAnimation", 1);
+    }
+
+    States
+    {
+        Ready:
+            TNT1 A 0 A_SetCrosshair(slots_holster_crosshair);
+            TNT1 A 1 A_WeaponReady;
+            TNT1 A 1 CheckPlayerStates();
+            loop;
+    }
+
+    States
+    {
+        Fire:
+        AltFire:
+            TNT1 A 1 A_Unholster;
+            Goto Ready;
+        MeleeAttack:
+        ShatterWindow:
+        HandRemoved:
+        ReturnHands:
+        Ready3:
+        Ready2:
+        Kick:
+        ReallyReady:
+        DoFlashlight:
+        ReloadWeaponInitializer:
+        Reload:
+        Equip:
+        Unequip:
+        MoveGunDown:
+        Ready:
+            TNT1 A 0 A_SetCrosshair(slots_holster_crosshair);
+            TNT1 A 1 A_WeaponReady;
+            TNT1 A 1 CheckPlayerStates();
+            loop;
     }
 }

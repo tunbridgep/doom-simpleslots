@@ -504,8 +504,7 @@ class SlotsToken : Inventory
 
         if (weap == holster)
         {
-            ignored = holster.GetLastWeapon();
-            SwitchWeapon(holster.GetLastWeapon());
+            DoLastWeapon();
         }
         else
         {
@@ -517,7 +516,6 @@ class SlotsToken : Inventory
 
             ignored = holster;
             let prev = actualCurrentWeapon == holster ? currWeapon : actualCurrentWeapon;
-            holster.SetLastWeapon(prev);
             SwitchWeapon(holster);
             ignored = prev;
             SlotDebug.LogVerbose("Holstering Weapon");

@@ -3,18 +3,6 @@
 //for some insane and ridiculous reason.
 mixin class SlotsHolsterInc
 {
-    Inventory lastWeapon;
-
-    void SetLastWeapon(Inventory weapon)
-    {
-        lastWeapon = weapon;
-    }
-
-    Inventory GetLastWeapon()
-    {
-        return lastWeapon;
-    }
-
     private action void A_Select()
     {
         A_SetCrosshair(slots_holster_crosshair);
@@ -30,8 +18,7 @@ mixin class SlotsHolsterInc
 
     private action void A_Unholster()
     {
-        if (invoker.lastWeapon)
-            A_SelectWeapon(invoker.lastWeapon.GetClassName());
+        EventHandler.SendNetworkEvent("LastWeapon");
     }
     
     Default
