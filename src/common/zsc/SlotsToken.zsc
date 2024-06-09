@@ -371,7 +371,7 @@ class SlotsToken : Inventory
     private void RememberWeapons()
     {
         let weap = GetWeapon();
-        if (actualCurrentWeapon != weap && weap != null) //changed weapon
+        if (actualCurrentWeapon != weap && weap != null && weap.GetClassName() != "SlotsHolster") //changed weapon
         {
             goodWeapon = null;
             if (ignored == weap)
@@ -477,12 +477,14 @@ class SlotsToken : Inventory
     }
 
     //Selecting last weapon
-    void DoLastWeapon()
+    void DoLastWeapon(bool actual = false)
     {
         SlotDebug.LogVerbose("last weapon press");
         
         let weap = GetWeapon();
-        if (weap != currWeapon)
+        if (actual && actualCurrentWeapon != null)
+            SwitchWeapon(actualCurrentWeapon);
+        else if (weap != currWeapon)
             SwitchWeapon(currWeapon);
         else if (lastWeapon != null)
             SwitchWeapon(lastWeapon);
@@ -504,7 +506,7 @@ class SlotsToken : Inventory
 
         if (weap == holster)
         {
-            DoLastWeapon();
+            DoLastWeapon(true);
         }
         else
         {
@@ -514,10 +516,9 @@ class SlotsToken : Inventory
                 holster = SlotsHolster(owner.FindInventory(HOLSTER_NAME));
             }
 
-            ignored = holster;
-            let prev = actualCurrentWeapon == holster ? currWeapon : actualCurrentWeapon;
+            //let prev = actualCurrentWeapon == holster ? currWeapon : actualCurrentWeapon;
             SwitchWeapon(holster);
-            ignored = prev;
+            //ignored = prev;
             SlotDebug.LogVerbose("Holstering Weapon");
         }
     }

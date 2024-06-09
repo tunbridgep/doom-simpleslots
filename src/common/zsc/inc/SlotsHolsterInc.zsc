@@ -18,7 +18,7 @@ mixin class SlotsHolsterInc
 
     private action void A_Unholster()
     {
-        EventHandler.SendNetworkEvent("LastWeapon");
+        EventHandler.SendNetworkEvent("SlotsHolster");
     }
     
     Default
