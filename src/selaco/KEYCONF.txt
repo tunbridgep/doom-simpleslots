@@ -1,0 +1,3 @@
+alias +slots_lastwheel "event WeaponSlotLastWheel"
+alias -slots_lastwheel "event WeaponSlotLastWheelOff"
+defaultbind Q +slots_lastwheel

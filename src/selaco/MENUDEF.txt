@@ -18,6 +18,7 @@ AddOptionMenu "ModOptionsMenu"
     space 20 
     StaticText "$SLOT_BINDINGS_MAIN_HEADER", "OMNIBLUE"
     Control "$SLOT_KEY_LASTWEAPON", "slots_lastweapon"
+    Control "$SLOT_KEY_LASTWHEEL", "+slots_lastwheel"
     Control "$SLOT_KEY_CONFIG", "+slots_config"
     Control "$SLOT_KEY_HOLSTER", "slots_holster"
     space 20 

@@ -1,0 +1,6 @@
+ 
+GameInfo
+{
+    AddEventHandlers = "SimpleSlotsHandler"
+    AddEventHandlers = "SimpleSlotsWheelHandler"
+}

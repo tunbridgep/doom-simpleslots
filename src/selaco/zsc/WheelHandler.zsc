@@ -1,0 +1,98 @@
+//Handles the special Weapon Wheel + Last Weapon in Selaco
+class SimpleSlotsWheelHandler : StaticEventHandler
+{
+    ui bool held; //Whether or not the button is being held
+    ui int held_tics; //How long the button has been held for
+    ui InputEvent lastInput;
+
+    WeaponWheelHandler handler;
+
+    override void WorldLoaded (WorldEvent e)
+    {
+        handler = WeaponWheelHandler(EventHandler.Find('WeaponWheelHandler'));
+    }
+
+    override void ConsoleProcess (ConsoleEvent e)
+    {
+        if (e.Name == "WeaponSlotLastWheel")
+        {
+            //console.printf("held = true;");
+            held = true;
+        }
+        else if (e.Name == "WeaponSlotLastWheelOff")
+        {
+            //console.printf("held = false;");
+            held = false;
+        }
+    }
+
+    override void UiTick()
+    {
+        if (handler == null)
+            return;
+        
+        if (gamestate == 7) //TITLEMAP
+            return;
+
+        if (held)
+        {
+            if (held_tics >= 15 && !handler.wheelShowing)
+                DoWheel(lastInput);
+            else
+                held_tics++;
+            //console.printf("held");
+        }
+        else if (handler.wheelShowing && held_tics > 0)
+        {
+            //console.printf("was held, undoing wheel");
+            UndoWheel(lastInput);
+            held_tics = 0;
+        }
+        else if (held_tics > 0)
+        {
+            //console.printf("was held, going to last");
+            UndoWheel(lastInput);
+            EventHandler.SendNetworkEvent("LastWeapon");
+            held_tics = 0;
+        }
+    }
+
+
+    override bool InputProcess (InputEvent e)
+    {
+        if (Bindings.GetBinding(e.KeyScan) == "+slots_lastwheel") //Todo: Detect this properly
+            lastInput = e;
+        return false;
+    }
+
+    //Why must this be so damn complicated!
+    ui void DoWheel(InputEvent e)
+    {
+        handler.openedWithGamepad = UIHelper.IsGamepadKey(e.KeyScan);
+        handler.startShowingWheel(handler.WEAPON_WHEEL);
+        //handler.wheelShowing = true;
+    }
+
+    ui void UndoWheel(InputEvent e)
+    {
+        if (!handler.wheelShowing)
+            return;
+
+        int slot, index;
+        [slot, index] = handler.wheels[handler.activeWheel].findSelectedItem();
+
+        if(slot >= 0)
+        {
+            S_StartSound ("weaponwheel/select", CHAN_VOICE, CHANF_UI, snd_sfxvolume * 0.6);
+            HUD.WeaponBarTimeout(15);
+        }
+        else
+        {
+            S_StartSound ("weaponwheel/close", CHAN_VOICE, CHANF_UI, snd_sfxvolume * 0.6);
+        }
+
+        EventHandler.SendNetworkEvent("wheel-", handler.activeWheel, slot, index);
+        handler.wheelShowing = false;
+    }
+}
+
