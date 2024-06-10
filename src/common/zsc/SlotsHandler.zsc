@@ -23,6 +23,7 @@ class SimpleSlotsHandler : SlotsBaseHandler
     override void UniquePlayerEntered(Actor Player, bool returning)
     {
         SetupTokens(Player);
+        using = false;
     }
 
     private void DoSlot(SlotsToken token, int slot)
@@ -83,11 +84,41 @@ class SimpleSlotsHandler : SlotsBaseHandler
         {
             token.DoHolster();
         }
+        else if (e.Name == "SlotsUseButton")
+            using = true;
+        else if (e.Name == "SlotsUseButtonEnd")
+            using = false;
+    }
+    
+    bool using;
+    ui bool using_latch;
+
+    override bool InputProcess (InputEvent e)
+    {
+        bool binding = Bindings.GetBinding(e.KeyScan) == "+use" || Bindings.GetBinding(e.KeyScan) == "+usereload";
+
+        if (binding)
+        {
+            if (e.Type == InputEvent.Type_KeyDown && !using_latch)
+            {
+                EventHandler.SendNetworkEvent("SlotsUseButton");
+                using_latch = true;
+                //console.printf("Start Use Button");
+            }
+            else if (e.Type == InputEvent.Type_KeyUp && using_latch)
+            {
+                EventHandler.SendNetworkEvent("SlotsUseButtonEnd");
+                using_latch = false;
+                //console.printf("End Use Button");
+            }
+        }
+
+        return false;
     }
 
     override void WorldTick()
     {
-        if (players[consoleplayer].cmd.buttons & BT_USE)
+        if (using && slots_holster_on_use)
         {
             if (held_use_tics > -1)
                 held_use_tics++;
