@@ -272,9 +272,10 @@ class SlotsToken : Inventory
     Inventory goodWeapon; //The currently selected weapon if it's valid for being a lastWeapon but hasn't been set yet.
     SlotManager slots;
     IgnoreList ignores;
-    bool enableRelease; //Can we release a slot button
+    int enableRelease; //How many tics until releasing a slot button will reset to previous weapon (-1 for never)
     float timer;
     const HOLSTER_NAME = "SlotsHolster";
+    const ENABLE_RELEASE_TIME = 10; //about 0.25 seconds
 
     override void AttachToOwner(Actor other)
     {
@@ -291,6 +292,11 @@ class SlotsToken : Inventory
     override void DoEffect()
     {
         timer += 1.0 / TICRATE;
+
+        //tick down the slot timer
+        if (enableRelease > 0)
+            enableRelease--;
+
         //SlotDebug.LogVerbose("Timer: " .. timer);
         Super.DoEffect();
         RememberWeapons();
@@ -298,12 +304,6 @@ class SlotsToken : Inventory
         {
             SetLastWeapon();
         }
-    }
-
-    private bool IsPending()
-    {
-        let pend = Owner.Player.PendingWeapon;
-        return pend != WP_NOCHANGE;
     }
 
     /*
@@ -349,7 +349,7 @@ class SlotsToken : Inventory
     private void SwitchWeapon(Inventory newWeapon)
     {
         let wp = newWeapon.GetClassName();
-        enableRelease = false;
+        enableRelease = -1;
         owner.A_SelectWeapon(wp);
         SlotDebug.LogVerbose("Switching Weapon to: "..wp);
         if (wp != "SlotsHolster")
@@ -434,7 +434,7 @@ class SlotsToken : Inventory
         if (!IsBadWeapon(weap))
         {
             slots.UpdateSlotItem(slot,GetWeapon());
-            enableRelease = false;
+            enableRelease = -1;
         }
     }
 
@@ -445,19 +445,19 @@ class SlotsToken : Inventory
         let slotweap = slots.GetSlotItem(slot);
         if (slotweap == null)
         {
-            enableRelease = false;
+            enableRelease = -1;
         }
         else if (slotweap == currWeapon && slotweap == actualCurrentWeapon)
         {
             PrintUtil.PrintScreenMessage(Stringtable.Localize("$SLOT_ALREADY_SELECTED"));
-            enableRelease = false;
+            enableRelease = -1;
         }
         else if (slotweap != weap)
         {
             SlotDebug.LogVerbose("slot "..slot.." press. Selecting " .. slotweap.GetClassName());
             ignored = slotweap;
             SwitchWeapon(slotweap);
-            enableRelease = IsPending();
+            enableRelease = ENABLE_RELEASE_TIME;
             SlotDebug.LogVerbose("enableRelease: " .. enableRelease);
         }
         else
@@ -471,9 +471,9 @@ class SlotsToken : Inventory
     //Releasing slot button
     void DoWeaponSlotRelease()
     {
-        if (!IsPending() && enableRelease)
+        if (enableRelease == 0)
             DoLastWeapon();
-        enableRelease = true;
+        enableRelease = -1;
     }
 
     //Selecting last weapon
