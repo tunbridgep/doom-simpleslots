@@ -23,7 +23,9 @@ class SlotsHolster : Fists
         +WeaponBase.NODEATHDESELECT
         +WeaponBase.AMMO_OPTIONAL
         +WeaponBase.NOAUTOSWITCHTO
-        SelacoWeapon.HideAmmo true;
+        WeaponBase.AmmoType1 "HolsterAmmo";
+        WeaponBase.AmmoType2 "HolsterAmmo2";
+        SelacoWeapon.HideAmmo false;
         SelacoWeapon.Upgradeable false;
         SelacoWeapon.interactionSprite "KFIH";
         SelacoWeapon.SlidingSprite "TNT1";

@@ -19,3 +19,38 @@ class WeaponUtils
         return false;
     }
 }
+
+class WeaponUtilsP play
+{
+    static void UpdateHolsterAmmo(Actor player, Inventory current)
+    {
+        Weapon curs = Weapon(current);
+        if (!curs)
+            return;
+
+        if (curs.AmmoType1)
+        {
+            let ammo1 = player.CountInv(curs.AmmoType1.GetClassName());
+            player.SetInventory("HolsterAmmo",ammo1);
+        }
+        else
+            player.SetInventory("HolsterAmmo",0);
+
+        if (curs.AmmoType2)
+        {
+            let ammo2 = player.CountInv(curs.AmmoType2.GetClassName());
+            player.SetInventory("HolsterAmmo2",ammo2);
+        }
+        else
+            player.SetInventory("HolsterAmmo2",0);
+        
+        //change ammo icon
+        let a1 = player.FindInventory("HolsterAmmo");
+        let a2 = player.FindInventory("HolsterAmmo2");
+
+        if (a1 && curs.Ammo1)
+            a1.Icon = curs.Ammo1.Icon;
+        if (a2 && curs.Ammo2)
+            a2.Icon = curs.Ammo2.Icon;
+    }
+}

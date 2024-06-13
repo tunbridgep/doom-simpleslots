@@ -516,7 +516,13 @@ class SlotsToken : Inventory
                 holster = SlotsHolster(owner.FindInventory(HOLSTER_NAME));
             }
 
+            //I have no idea what this does or if it's needed
             //let prev = actualCurrentWeapon == holster ? currWeapon : actualCurrentWeapon;
+
+            //Set Holster to show our current ammo
+            WeaponUtilsP.UpdateHolsterAmmo(owner,weap);
+
+            //Switch to Holster weapon
             SwitchWeapon(holster);
             //ignored = prev;
             SlotDebug.LogVerbose("Holstering Weapon");

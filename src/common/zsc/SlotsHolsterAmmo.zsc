@@ -1,0 +1,13 @@
+//Fake Ammo Counter
+class HolsterAmmo : Ammo
+{
+    Default
+    {
+        Inventory.MaxAmount 999999;
+        Inventory.Icon "AAMOA0";
+    }
+}
+
+class HolsterAmmo2 : HolsterAmmo
+{
+}

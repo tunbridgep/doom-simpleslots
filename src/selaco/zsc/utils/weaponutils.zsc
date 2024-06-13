@@ -21,3 +21,35 @@ class WeaponUtils
         return false;
     }
 }
+
+class WeaponUtilsP play
+{
+    static void UpdateHolsterAmmo(Actor player, Inventory current)
+    {
+        SelacoWeapon curs = SelacoWeapon(current);
+        if (!curs)
+            return;
+
+        if (curs.AmmoType1)
+        {
+            let ammo1 = player.CountInv(curs.AmmoType1.GetClassName());
+            player.SetInventory("HolsterAmmo",ammo1);
+        }
+        else
+            player.SetInventory("HolsterAmmo",0);
+
+        if (curs.AmmoType2)
+        {
+            let ammo2 = player.CountInv(curs.AmmoType2.GetClassName());
+            player.SetInventory("HolsterAmmo2",ammo2);
+        }
+        else
+            player.SetInventory("HolsterAmmo2",0);
+
+
+        //hide/show ammo counter
+        //SelacoWeapon holster = SelacoWeapon(player.FindInventory("SlotsHolster"));
+        //if (holster)
+        //    holster.HideAmmo = curs.HideAmmo;
+    }
+}

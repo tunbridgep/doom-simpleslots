@@ -14,6 +14,8 @@ class SlotsHolster : Weapon
         +Weapon.NODEATHDESELECT
         +Weapon.AMMO_OPTIONAL
         +Weapon.NOAUTOSWITCHTO
+        Weapon.AmmoType1 "HolsterAmmo";
+        Weapon.AmmoType2 "HolsterAmmo2";
     }
     
     void OnUnholster()
