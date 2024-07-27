@@ -6,6 +6,7 @@ nosave user int slots_holster_crosshair = -1;
 nosave user bool slots_check_ammo = true;
 nosave user bool slots_holster_on_use = false;
 nosave user int slots_holster_on_use_tics = 25; //how long we need to hold use to holster/unholster (tics)
+nosave user bool slots_ignore_same_tag = true; //Ignore weapons with the same name
 
 nosave user string slots_ignore_0 = "";
 nosave user string slots_ignore_1 = "";

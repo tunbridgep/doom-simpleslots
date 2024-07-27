@@ -266,6 +266,8 @@ class SlotsToken : Inventory
     }
 
     Inventory actualCurrentWeapon; //our ACTUAL currently selected weapon, used to know when we change weapon
+    String actualCurrentWeaponClass;
+    String actualCurrentWeaponTag;
     Inventory lastWeapon; //The previous weapon we selected which was not ignored
     Inventory currWeapon; //The latest weapon we selected which was not ignored
     Inventory ignored; //The currently ignored weapon. This is temporary and not added to the ignore list
@@ -374,10 +376,16 @@ class SlotsToken : Inventory
         if (actualCurrentWeapon != weap && weap != null && weap.GetClassName() != "SlotsHolster") //changed weapon
         {
             goodWeapon = null;
+
             if (ignored == weap)
             {
                 ignored = null;
                 SlotDebug.LogVerbose("Weapon Switch Ignored (Temp Ignore)");
+            }
+            else if (actualCurrentWeaponTag == weap.GetTag() && slots_ignore_same_tag)
+            {
+                //Do nothing
+                SlotDebug.LogVerbose("Weapon Switch Ignored (Same Tag)");
             }
             else if (weap == currWeapon)
             {
@@ -412,9 +420,19 @@ class SlotsToken : Inventory
                 SlotDebug.LogVerbose("Setting goodWeapon to "..weap.GetClassName());
                 goodWeapon = weap;
             }
+            AssignActualCurrWeapon(weap);
             timer = 0;
-            actualCurrentWeapon = weap;
         }
+    }
+
+    //This is necessary because sometimes currWeapon can disappear, like
+    //in Ashes Hard Reset where different ammo types take away the other version
+    //of the same weapon
+    void AssignActualCurrWeapon(Inventory newWeapon)
+    {
+        actualCurrentWeapon = newWeapon;
+        actualCurrentWeaponClass = newWeapon.GetClassName();
+        actualCurrentWeaponTag = newWeapon.GetTag();
     }
 
     //Sets the lastweapon to our latest valid goodWeapon
