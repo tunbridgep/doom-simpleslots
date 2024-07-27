@@ -44,7 +44,6 @@ OptionMenu "SimpleSlotWeaponSlots"
     StaticText ""
     Option "$SLOT_AMMO_CHECK", "slots_check_ammo", YesNo
     StaticText "$SLOT_AMMO_CHECK_DESC"
-
 }
 
 OptionMenu "SimpleSlotOptions"
@@ -73,6 +72,10 @@ OptionMenu "SimpleSlotOptions"
     StaticText "$SLOT_HOLSTER_CROSSHAIR_DESC"
     StaticText "$SLOT_HOLSTER_CROSSHAIR_DESC2"
     StaticText "$SLOT_HOLSTER_CROSSHAIR_DESC3", 1
+    StaticText ""
+    Option "$SLOT_AUTO_POPULATE_LAST", "slots_auto_populate_last", YesNo
+    StaticText "$SLOT_AUTO_POPULATE_LAST_DESC"
+    StaticText "$SLOT_AUTO_POPULATE_LAST_DESC2"
     StaticText ""
     SubMenu "$SLOT_SLOTS_MENUNAME", "SimpleSlotWeaponSlots", 0, 1
 }

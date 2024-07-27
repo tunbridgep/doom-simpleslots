@@ -65,3 +65,6 @@ SLOT_AMMO_CHECK_DESC = "When selecting a slot, only choose weapons that have amm
 SLOT_HOLSTER_ON_USE = "Hold USE to Holster";
 SLOT_HOLSTER_ON_USE_DESC = "Holster be pressing your Use key.";
 SLOT_HOLSTER_ON_USE_DESC2 = "Allows holstering without using a separate key.";
+SLOT_AUTO_POPULATE_LAST = "Auto-Populate Last Weapon on New Game";
+SLOT_AUTO_POPULATE_LAST_DESC = "Automatically set the Last Weapon Used when starting a new game.";
+SLOT_AUTO_POPULATE_LAST_DESC2 = "This will usually be the fist or another melee weapon.";

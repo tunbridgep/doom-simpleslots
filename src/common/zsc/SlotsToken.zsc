@@ -294,6 +294,9 @@ class SlotsToken : Inventory
     override void DoEffect()
     {
         timer += 1.0 / TICRATE;
+        
+        if (lastWeapon == null && slots_auto_populate_last)
+            SetStartingLastWeapon();
 
         //tick down the slot timer
         if (enableRelease > 0)
@@ -308,31 +311,30 @@ class SlotsToken : Inventory
         }
     }
 
-    /*
     //Loops through the players weapons, and finds the highest weapon
     //that it can, on whatever slot, to set as our default lastweapon
     private void SetStartingLastWeapon()
     {
+        SlotDebug.LogVerbose("Setting lastweapon");
         Inventory findLast;
-        Inventory weap = owner.Player.PendingWeapon;
+        Inventory weap = owner.Player.ReadyWeapon;
         for (int i = 0; i < 4;i++)
         {
             SlotDebug.LogVerbose("Checking Slot: "..i);
-            for (int j = 0;j < owner.Player.weapons.SlotSize(i);j++)
+            for (int j = 1;j < owner.Player.weapons.SlotSize(i);j++)
             {
                 let slotweap = Inventory(owner.FindInventory(owner.player.weapons.GetWeapon(i,j)));
-                if (slotweap)
+                if (slotweap && weap != slotweap)
                 {
                     SlotDebug.LogVerbose("Checking Slot Weapon: "..slotweap.GetClassName());
-                    if (weap != slotweap)
-                        findLast = slotweap;
+                    findLast = slotweap;
                 }
             }
         }
 
+        SlotDebug.LogVerbose("Setting Last Weapon to: "..findLast.GetClassName());
         lastWeapon = findLast;
     }
-    */
 
     private Inventory GetWeapon()
     {
@@ -350,6 +352,9 @@ class SlotsToken : Inventory
 
     private void SwitchWeapon(Inventory newWeapon)
     {
+        if (newWeapon == null)
+            return;
+
         let wp = newWeapon.GetClassName();
         enableRelease = -1;
         owner.A_SelectWeapon(wp);
@@ -382,11 +387,6 @@ class SlotsToken : Inventory
                 ignored = null;
                 SlotDebug.LogVerbose("Weapon Switch Ignored (Temp Ignore)");
             }
-            else if (actualCurrentWeaponTag == weap.GetTag() && slots_ignore_same_tag)
-            {
-                //Do nothing
-                SlotDebug.LogVerbose("Weapon Switch Ignored (Same Tag)");
-            }
             else if (weap == currWeapon)
             {
                 //Do Nothing
@@ -399,6 +399,11 @@ class SlotsToken : Inventory
             else if (IsBadWeapon(weap))
             {
                 SlotDebug.LogVerbose("Weapon Switch Ignored (Bad Weapon)");
+            }
+            else if (actualCurrentWeaponTag == weap.GetTag() && slots_ignore_same_tag)
+            {
+                //Do nothing
+                SlotDebug.LogVerbose("Weapon Switch Ignored (Same Tag)");
             }
             else if (ignores.IsIgnored(weap) && lastWeapon != null)
             {
