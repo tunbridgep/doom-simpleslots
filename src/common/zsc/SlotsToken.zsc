@@ -332,8 +332,11 @@ class SlotsToken : Inventory
             }
         }
 
-        SlotDebug.LogVerbose("Setting Last Weapon to: "..findLast.GetClassName());
-        lastWeapon = findLast;
+        if (findLast != null)
+        {
+            SlotDebug.LogVerbose("Setting Last Weapon to: "..findLast.GetClassName());
+            lastWeapon = findLast;
+        }
     }
 
     private Inventory GetWeapon()
