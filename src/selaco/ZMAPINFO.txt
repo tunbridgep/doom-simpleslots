@@ -3,4 +3,5 @@ GameInfo
 {
     AddEventHandlers = "SimpleSlotsHandler"
     AddEventHandlers = "SimpleSlotsWheelHandler"
+    AddEventHandlers = "SimpleSlotsInventoryHandler"
 }

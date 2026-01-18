@@ -77,5 +77,13 @@ OptionMenu "SimpleSlotOptions"
     StaticText "$SLOT_AUTO_POPULATE_LAST_DESC"
     StaticText "$SLOT_AUTO_POPULATE_LAST_DESC2"
     StaticText ""
+    Control "$SLOT_KEY_CLEARINV", "slots_clearinventory"
+    StaticText "$SLOT_KEY_CLEARINV_DESC"
+    StaticText ""
+    Option "$SLOT_EMPTY_INVENTORY_ITEM", "slots_empty_inventory_item", YesNo
+    StaticText "$SLOT_EMPTY_INVENTORY_ITEM_DESC"
+    StaticText "$SLOT_EMPTY_INVENTORY_ITEM_DESC2"
+    StaticText "$SLOT_EMPTY_INVENTORY_ITEM_DESC3", 1
+    StaticText ""
     SubMenu "$SLOT_SLOTS_MENUNAME", "SimpleSlotWeaponSlots", 0, 1
 }

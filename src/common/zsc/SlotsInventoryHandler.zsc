@@ -1,0 +1,67 @@
+//Handles adding and removing empty inventory item based on settings.
+
+class SlotsEmptyInventory : Inventory
+{
+    Default
+    {
+        +INVENTORY.INVBAR;
+        +INVENTORY.UNTOSSABLE;
+        +INVENTORY.UNDROPPABLE;
+        +INVENTORY.QUIET;
+        Inventory.MaxAmount 1;
+        Inventory.Icon "INVNONE";
+        Tag "$TAG_SLOTSINVENTORY";
+    }
+}
+
+class SimpleSlotsInventoryHandler : SlotsBaseHandler
+{
+
+    void DoInventoryCheck(PlayerPawn player)
+    {
+        if (player == null || player.player == null)
+            return;
+            
+        //Mildly complex logic here.
+        //We want the "No Item" to always appear as the first inventory item.
+        //So we need to constantly remove it whenever possible, unless it's selected.
+        //So that we can re-add it later if it makes sense to re-add it.
+        if (SlotsEmptyInventory(player.InvSel) == null)
+            player.TakeInventory("SlotsEmptyInventory",1000,true);
+
+        //If we selected nothing, we need to fix up our selection or we can't scroll the inventory screen
+        //This is a dirty hack!
+        if (player.InvSel == null)
+            player.InvSel = player.FirstInv();
+
+        //Don't add the empty inventory icon unless we have it enabled and have at least one other inventory item.
+        let cmd = Cvar.GetCVar("slots_empty_inventory_item",player.player);
+        if (cmd != null && cmd.GetBool() && player.FirstInv() != null)
+            player.GiveInventory("SlotsEmptyInventory",1);
+    }
+
+    override void UniquePlayerEntered(Actor Player, bool returning)
+    {
+        DoInventoryCheck(PlayerPawn(Player));
+    }
+
+    override bool InputProcess (InputEvent e)
+    {
+        bool binding = Bindings.GetBinding(e.KeyScan) == "invprev" || Bindings.GetBinding(e.KeyScan) == "invnext";
+
+        if (binding && e.Type == InputEvent.Type_KeyDown)
+            EventHandler.SendNetworkEvent("SlotsCheckInventory");
+
+        return false;
+    }
+    
+    override void NetworkProcess (ConsoleEvent e) 
+    {
+        let player = players[e.Player].mo;
+        if (e.Name == "SlotsCheckInventory" && player != null)
+            DoInventoryCheck(player);
+        if (e.Name == "SlotsClearInventory" && player != null)
+            player.InvSel = null;
+    }
+}
+

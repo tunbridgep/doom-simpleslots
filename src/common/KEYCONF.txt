@@ -8,6 +8,9 @@ defaultbind ALT +slots_config
 alias slots_holster "netevent SlotsHolster"
 defaultbind H slots_holster
 
+alias slots_clearinventory "netevent SlotsClearInventory"
+defaultbind Backspace slots_clearinventory
+
 alias +slots_select_0 "netevent WeaponSlot0"
 alias -slots_select_0 "netevent WeaponSlotRelease"
 defaultbind KP1 +slots_select_0

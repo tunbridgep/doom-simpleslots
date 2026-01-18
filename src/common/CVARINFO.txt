@@ -8,6 +8,7 @@ nosave user bool slots_holster_on_use = false;
 nosave user int slots_holster_on_use_tics = 25; //how long we need to hold use to holster/unholster (tics)
 nosave user bool slots_ignore_same_tag = true; //Ignore weapons with the same name
 nosave user bool slots_auto_populate_last = true; //Automatically detect the last used weapon when starting a new game (usually a melee weapon)
+user bool slots_empty_inventory_item = false; //add a "empty" inventory item, as a QoL addition.
 
 nosave user string slots_ignore_0 = "";
 nosave user string slots_ignore_1 = "";
